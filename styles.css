@@ -268,7 +268,7 @@ section:not(.hero) h2 {
 .hero .platform-links { justify-content: center; }
 
 /* ---------- Page hero (non-home pages) ---------- */
-.page-hero {
+section.page-hero {
   padding: clamp(7rem, 14vw, 9rem) var(--gutter) 1.25rem;
   position: relative;
   overflow: hidden;
