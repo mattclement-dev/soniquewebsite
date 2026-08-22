@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Press Kit - SONIQUE</title>
+  <meta name="description" content="Press and media resources for Sonique — bio, photos, and press kits for every release.">
+
+  <link rel="icon" type="image/jpeg" href="images/favicon.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">SONIQUE</a>
+      <nav class="main-nav" id="main-nav" aria-label="Primary">
+        <ul>
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="bio.html" class="nav-link">Bio</a></li>
+          <li><a href="music.html" class="nav-link">Music</a></li>
+          <li><a href="press.html" class="nav-link" aria-current="page">Press Kit</a></li>
+          <li><a href="events.html" class="nav-link">Events</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="page-hero">
+      <div class="blob blob-peach" style="width:280px; height:280px; top:-60px; right:-80px;"></div>
+      <div class="page-hero-inner">
+        <p class="eyebrow">Press Kit</p>
+        <h1>For Media & Bookers</h1>
+        <p>Bio, photos, and downloadable press kits for every single release. For anything not listed here, reach out directly using the contact details below.</p>
+      </div>
+    </section>
+
+    <section class="press">
+      <div class="section-inner">
+
+        <!-- General EPK + press contact -->
+        <div class="press-intro-card reveal">
+          <div>
+            <p class="eyebrow" style="margin-bottom: 0.4rem;">General Press Kit</p>
+            <h3 style="font-size: 1.3rem; margin-bottom: 0.4rem;">Full Electronic Press Kit</h3>
+            <p>Bio, high-res photos, logo, and general fact sheet — replace the link below with the actual PDF or ZIP once ready.</p>
+          </div>
+          <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+            <a href="#" class="btn btn-primary btn-sm">Download Full EPK</a>
+            <a href="mailto:press@example.com" class="btn btn-outline btn-sm">Press Contact</a>
+          </div>
+        </div>
+
+        <p class="eyebrow">By Release</p>
+        <h2>Single Press Kits</h2>
+
+        <!--
+          PRESS CARD TEMPLATE
+          Duplicate this .press-card block for each single/EP.
+          Replace cover art, title, date, blurb, and the download links.
+        -->
+        <div class="press-grid">
+          <div class="press-card reveal">
+            <div class="press-card-art">
+              <div class="photo-placeholder"><span>Cover Art</span></div>
+            </div>
+            <div class="press-card-body">
+              <h3>Single Title Here</h3>
+              <span class="release-meta">Released 2026</span>
+              <p>One-line summary for media use — genre, mood, and any key credits (writers, producer).</p>
+              <div class="press-card-actions">
+                <a href="#" class="btn btn-outline btn-sm">Download Press Kit (PDF)</a>
+                <a href="#" class="btn btn-outline btn-sm">Download Photos (ZIP)</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="press-card reveal">
+            <div class="press-card-art">
+              <div class="photo-placeholder"><span>Cover Art</span></div>
+            </div>
+            <div class="press-card-body">
+              <h3>Previous Single Title</h3>
+              <span class="release-meta">Released 2025</span>
+              <p>One-line summary for media use — genre, mood, and any key credits (writers, producer).</p>
+              <div class="press-card-actions">
+                <a href="#" class="btn btn-outline btn-sm">Download Press Kit (PDF)</a>
+                <a href="#" class="btn btn-outline btn-sm">Download Photos (ZIP)</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="press-card reveal">
+            <div class="press-card-art">
+              <div class="photo-placeholder"><span>Cover Art</span></div>
+            </div>
+            <div class="press-card-body">
+              <h3>Debut Single Title</h3>
+              <span class="release-meta">Released 2024</span>
+              <p>One-line summary for media use — genre, mood, and any key credits (writers, producer).</p>
+              <div class="press-card-actions">
+                <a href="#" class="btn btn-outline btn-sm">Download Press Kit (PDF)</a>
+                <a href="#" class="btn btn-outline btn-sm">Download Photos (ZIP)</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="section-inner footer-inner">
+      <div class="footer-brand">SONIQUE</div>
+      <ul class="social-links">
+        <li><a href="#" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="#" target="_blank" rel="noopener">TikTok</a></li>
+        <li><a href="#" target="_blank" rel="noopener">YouTube</a></li>
+        <li><a href="mailto:booking@example.com">Booking</a></li>
+      </ul>
+      <p class="footer-copy">&copy; <span class="js-year"></span> Sonique. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

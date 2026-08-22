@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music - SONIQUE</title>
+  <meta name="description" content="Stream Sonique's music on Spotify, Apple Music, YouTube Music, and more.">
+
+  <link rel="icon" type="image/jpeg" href="images/favicon.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">SONIQUE</a>
+      <nav class="main-nav" id="main-nav" aria-label="Primary">
+        <ul>
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="bio.html" class="nav-link">Bio</a></li>
+          <li><a href="music.html" class="nav-link" aria-current="page">Music</a></li>
+          <li><a href="press.html" class="nav-link">Press Kit</a></li>
+          <li><a href="events.html" class="nav-link">Events</a></li>          
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="page-hero">
+      <div class="blob blob-blue" style="width:300px; height:300px; top:-80px; left:-100px;"></div>
+      <div class="page-hero-inner">
+        <p class="eyebrow">Music</p>
+        <h1>Listen Everywhere</h1>
+        <p>Every release, with links to every major streaming platform. Add new singles and EPs here as they drop.</p>
+        <div class="platform-links" style="margin-top: 1.5rem;">
+          <a href="#" class="platform-pill">Spotify Profile</a>
+          <a href="#" class="platform-pill">Apple Music Profile</a>
+          <a href="#" class="platform-pill">YouTube Channel</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="releases">
+      <div class="section-inner">
+        <p class="eyebrow">Discography</p>
+        <h2>Releases</h2>
+
+        <!--
+          RELEASE CARD TEMPLATE
+          Duplicate this .release-card block for each new single or EP.
+          Swap the cover art, title, year, description, and platform links.
+        -->
+        <div class="release-card reveal">
+          <div class="release-art">
+            <div class="photo-placeholder"><span>Cover<br>Art</span></div>
+          </div>
+          <div class="release-info">
+            <h3>Friends</h3>
+            <span class="release-meta">SINGLE · 2026</span>
+            <p>Short description of the single — the story behind it, the mood, or a lyric excerpt.</p>
+            <div class="platform-links">
+              <a href="#" class="platform-pill">Spotify</a>
+              <a href="#" class="platform-pill">Apple Music</a>
+              <a href="#" class="platform-pill">YouTube Music</a>
+              <a href="#" class="platform-pill">Amazon Music</a>
+              <a href="#" class="platform-pill">Deezer</a>
+              <a href="#" class="platform-pill">SoundCloud</a>
+              <a href="#" class="platform-pill">Tidal</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="release-card reveal">
+          <div class="release-art">
+            <div class="photo-placeholder"><span>Cover<br>Art</span></div>
+          </div>
+          <div class="release-info">
+            <h3>Why Are We Still Here</h3>
+            <span class="release-meta">SINGLE · 2025</span>
+            <p>An introspective track that questions our existence and a generation’s quiet unrest. Torn between nostalgia, disconnection and the search for meaning. It's an unfiltered question mark aimed straight at the system and at ourselves.</p>
+            <div class="platform-links">
+              <a href="https://open.spotify.com/track/4LDU91BmPBTdb70bZokdhq?si=d20d40d08fed474b" class="platform-pill">Spotify</a>
+              <a href="#" class="platform-pill">Apple Music</a>
+              <a href="#" class="platform-pill">YouTube Music</a>
+              <a href="#" class="platform-pill">Amazon Music</a>
+              <a href="#" class="platform-pill">Deezer</a>
+              <a href="#" class="platform-pill">SoundCloud</a>
+              <a href="#" class="platform-pill">Tidal</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="release-card reveal">
+          <div class="release-art">
+            <div class="photo-placeholder"><span>Cover<br>Art</span></div>
+          </div>
+          <div class="release-info">
+            <h3>Debut Single Title</h3>
+            <span class="release-meta">SINGLE · 2024</span>
+            <p>Short description of the single — the story behind it, the mood, or a lyric excerpt.</p>
+            <div class="platform-links">
+              <a href="#" class="platform-pill">Spotify</a>
+              <a href="#" class="platform-pill">Apple Music</a>
+              <a href="#" class="platform-pill">YouTube Music</a>
+              <a href="#" class="platform-pill">Amazon Music</a>
+              <a href="#" class="platform-pill">Deezer</a>
+              <a href="#" class="platform-pill">SoundCloud</a>
+              <a href="#" class="platform-pill">Tidal</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="section-inner footer-inner">
+      <div class="footer-brand">SONIQUE</div>
+      <ul class="social-links">
+        <li><a href="#" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="#" target="_blank" rel="noopener">TikTok</a></li>
+        <li><a href="#" target="_blank" rel="noopener">YouTube</a></li>
+        <li><a href="mailto:booking@example.com">Booking</a></li>
+      </ul>
+      <p class="footer-copy">&copy; <span class="js-year"></span> Sonique. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

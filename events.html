@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events - SONIQUE</title>
+  <meta name="description" content="Upcoming tour dates and live shows for Sonique, synced live from Bandsintown.">
+
+  <link rel="icon" type="image/jpeg" href="images/favicon.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">SONIQUE</a>
+      <nav class="main-nav" id="main-nav" aria-label="Primary">
+        <ul>
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="bio.html" class="nav-link">Bio</a></li>
+          <li><a href="music.html" class="nav-link">Music</a></li>
+          <li><a href="press.html" class="nav-link">Press Kit</a></li>
+          <li><a href="events.html" class="nav-link" aria-current="page">Events</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="page-hero">
+      <div class="blob blob-pink" style="width:280px; height:280px; top:-60px; left:-90px;"></div>
+      <div class="page-hero-inner">
+        <p class="eyebrow">Live</p>
+        <h1>Upcoming Shows</h1>
+        <p>Upcoming shows and live performances. </p>
+      </div>
+    </section>
+
+    <section class="events events-tight">
+      <div class="section-inner">
+
+        <div class="events-widget-wrap reveal">
+          <!--
+            BANDSINTOWN WIDGET — official embed for SONIQUE
+            Pulled from your Bandsintown for Artists widget tool. If you ever
+            need to regenerate it (new styling options, etc.), log into
+            bandsintown.com/artists, open the Widget tool for this artist,
+            and copy the fresh snippet in over this one.
+          -->
+          <script charset="utf-8" src="https://widgetv3.bandsintown.com/main.min.js"></script>
+          <a class="bit-widget-initializer"
+            data-artist-name="id_15638131"
+            data-app-id="b83edb127f5bbe40b5e94f80fbfa35a6"
+          ></a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="section-inner footer-inner">
+      <div class="footer-brand">SONIQUE</div>
+      <p class="footer-copy">&copy; <span class="js-year"></span> Sonique. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
