@@ -60,12 +60,21 @@
 
         <!--
           RELEASE CARD TEMPLATE
-          Duplicate this .release-card block for each new single or EP.
-          Swap the cover art, title, year, description, and platform links.
+          Each song below is a pair: a .release-card (cover art + info) and a
+          .video-card (music video embed) right after it.
+
+          COVER ART: swap the src on each .release-art img for the real file
+          in images/ — the filenames below are just a naming suggestion.
+
+          VIDEO: replace VIDEO_ID in each iframe src with the real YouTube
+          video ID. If a song doesn't have a music video, just delete that
+          song's whole .video-card block.
         -->
+
+        <!-- Friends — 2026 -->
         <div class="release-card reveal">
           <div class="release-art">
-            <div class="photo-placeholder"><span>Cover<br>Art</span></div>
+            <img src="images/cover-friends.webp" alt="Friends — single cover art">
           </div>
           <div class="release-info">
             <h3>Friends</h3>
@@ -82,34 +91,29 @@
             </div>
           </div>
         </div>
-
-        <div class="release-card reveal">
-          <div class="release-art">
-            <div class="photo-placeholder"><span>Cover<br>Art</span></div>
-          </div>
-          <div class="release-info">
-            <h3>Why Are We Still Here</h3>
-            <span class="release-meta">SINGLE · 2025</span>
-            <p>An introspective track that questions our existence and a generation’s quiet unrest. Torn between nostalgia, disconnection and the search for meaning. It's an unfiltered question mark aimed straight at the system and at ourselves.</p>
-            <div class="platform-links">
-              <a href="https://open.spotify.com/track/4LDU91BmPBTdb70bZokdhq?si=d20d40d08fed474b" class="platform-pill">Spotify</a>
-              <a href="#" class="platform-pill">Apple Music</a>
-              <a href="#" class="platform-pill">YouTube Music</a>
-              <a href="#" class="platform-pill">Amazon Music</a>
-              <a href="#" class="platform-pill">Deezer</a>
-              <a href="#" class="platform-pill">SoundCloud</a>
-              <a href="#" class="platform-pill">Tidal</a>
-            </div>
+        <div class="video-card reveal">
+          <p class="eyebrow">Watch</p>
+          <h3>Friends — Official Music Video</h3>
+          <div class="video-embed">
+            <iframe
+              src="https://www.youtube.com/embed/r1O-GlXFh9s"
+              title="Friends — Official Music Video"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              loading="lazy">
+            </iframe>
           </div>
         </div>
 
+        <!-- Black & White -->
         <div class="release-card reveal">
           <div class="release-art">
-            <div class="photo-placeholder"><span>Cover<br>Art</span></div>
+            <img src="images/cover-black-and-white.webp" alt="Black & White — single cover art">
           </div>
           <div class="release-info">
-            <h3>Debut Single Title</h3>
-            <span class="release-meta">SINGLE · 2024</span>
+            <h3>Black &amp; White</h3>
+            <span class="release-meta">SINGLE · Add year</span>
             <p>Short description of the single — the story behind it, the mood, or a lyric excerpt.</p>
             <div class="platform-links">
               <a href="#" class="platform-pill">Spotify</a>
@@ -122,6 +126,156 @@
             </div>
           </div>
         </div>
+        <div class="video-card reveal">
+          <p class="eyebrow">Watch</p>
+          <h3>Black &amp; White — Official Music Video</h3>
+          <div class="video-embed">
+            <iframe
+              src="https://www.youtube.com/embed/hMhGKkodOMI"
+              title="Black & White — Official Music Video"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              loading="lazy">
+            </iframe>
+          </div>
+        </div>
+
+        <!-- Uncaged -->
+        <div class="release-card reveal">
+          <div class="release-art">
+            <img src="images/cover-uncaged.webp" alt="Uncaged — single cover art">
+          </div>
+          <div class="release-info">
+            <h3>Uncaged</h3>
+            <span class="release-meta">SINGLE · Add year</span>
+            <p>Short description of the single — the story behind it, the mood, or a lyric excerpt.</p>
+            <div class="platform-links">
+              <a href="#" class="platform-pill">Spotify</a>
+              <a href="#" class="platform-pill">Apple Music</a>
+              <a href="#" class="platform-pill">YouTube Music</a>
+              <a href="#" class="platform-pill">Amazon Music</a>
+              <a href="#" class="platform-pill">Deezer</a>
+              <a href="#" class="platform-pill">SoundCloud</a>
+              <a href="#" class="platform-pill">Tidal</a>
+            </div>
+          </div>
+        </div>
+        <div class="video-card reveal">
+          <p class="eyebrow">Watch</p>
+          <h3>Uncaged — Official Music Video</h3>
+          <div class="video-embed">
+            <iframe
+              src="https://www.youtube.com/embed/wKWFyWTeNK0"
+              title="Uncaged — Official Music Video"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              loading="lazy">
+            </iframe>
+          </div>
+        </div>
+
+        <!-- My Calling -->
+        <div class="release-card reveal">
+          <div class="release-art">
+            <img src="images/cover-my-calling.webp" alt="My Calling — single cover art">
+          </div>
+          <div class="release-info">
+            <h3>My Calling</h3>
+            <span class="release-meta">SINGLE · Add year</span>
+            <p>Short description of the single — the story behind it, the mood, or a lyric excerpt.</p>
+            <div class="platform-links">
+              <a href="#" class="platform-pill">Spotify</a>
+              <a href="#" class="platform-pill">Apple Music</a>
+              <a href="#" class="platform-pill">YouTube Music</a>
+              <a href="#" class="platform-pill">Amazon Music</a>
+              <a href="#" class="platform-pill">Deezer</a>
+              <a href="#" class="platform-pill">SoundCloud</a>
+              <a href="#" class="platform-pill">Tidal</a>
+            </div>
+          </div>
+        </div>
+        
+
+        <!-- Finding Your Way -->
+        <div class="release-card reveal">
+          <div class="release-art">
+            <img src="images/cover-finding-your-way.webp" alt="Finding Your Way — single cover art">
+          </div>
+          <div class="release-info">
+            <h3>Finding Your Way</h3>
+            <span class="release-meta">SINGLE · Add year</span>
+            <p>Short description of the single — the story behind it, the mood, or a lyric excerpt.</p>
+            <div class="platform-links">
+              <a href="#" class="platform-pill">Spotify</a>
+              <a href="#" class="platform-pill">Apple Music</a>
+              <a href="#" class="platform-pill">YouTube Music</a>
+              <a href="#" class="platform-pill">Amazon Music</a>
+              <a href="#" class="platform-pill">Deezer</a>
+              <a href="#" class="platform-pill">SoundCloud</a>
+              <a href="#" class="platform-pill">Tidal</a>
+            </div>
+          </div>
+        </div>
+        
+
+        <!-- Marinade -->
+        <div class="release-card reveal">
+          <div class="release-art">
+            <img src="images/cover-marinade.webp" alt="Marinade — single cover art">
+          </div>
+          <div class="release-info">
+            <h3>Marinade</h3>
+            <span class="release-meta">SINGLE · Add year</span>
+            <p>Short description of the single — the story behind it, the mood, or a lyric excerpt.</p>
+            <div class="platform-links">
+              <a href="#" class="platform-pill">Spotify</a>
+              <a href="#" class="platform-pill">Apple Music</a>
+              <a href="#" class="platform-pill">YouTube Music</a>
+              <a href="#" class="platform-pill">Amazon Music</a>
+              <a href="#" class="platform-pill">Deezer</a>
+              <a href="#" class="platform-pill">SoundCloud</a>
+              <a href="#" class="platform-pill">Tidal</a>
+            </div>
+          </div>
+        </div>
+        <div class="video-card reveal">
+          <p class="eyebrow">Watch</p>
+          <h3>Marinade — Official Music Video</h3>
+          <div class="video-embed">
+            <iframe
+              src="https://www.youtube.com/embed/4Lk9Vq7ptb0"
+              title="Marinade — Official Music Video"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              loading="lazy">
+            </iframe>
+          </div>
+        </div>
+
+        <!-- Why Are We Still Here -->
+        <div class="release-card reveal">
+          <div class="release-art">
+            <img src="images/cover-why-are-we-still-here.webp" alt="Why Are We Still Here — single cover art">
+          </div>
+          <div class="release-info">
+            <h3>Why Are We Still Here</h3>
+            <span class="release-meta">SINGLE · 2025</span>
+            <p>An introspective track that questions our existence and a generation's quiet unrest. Torn between nostalgia, disconnection and the search for meaning. It's an unfiltered question mark aimed straight at the system and at ourselves.</p>
+            <div class="platform-links">
+              <a href="https://open.spotify.com/track/4LDU91BmPBTdb70bZokdhq?si=d20d40d08fed474b" class="platform-pill">Spotify</a>
+              <a href="#" class="platform-pill">Apple Music</a>
+              <a href="#" class="platform-pill">YouTube Music</a>
+              <a href="#" class="platform-pill">Amazon Music</a>
+              <a href="#" class="platform-pill">Deezer</a>
+              <a href="#" class="platform-pill">SoundCloud</a>
+              <a href="#" class="platform-pill">Tidal</a>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
