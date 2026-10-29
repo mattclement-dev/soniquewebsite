@@ -3,32 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SONIQUE</title>
-  <meta name="description" content="Official website of SONIQUE — South African pop artist. Music, tour dates, press kit, and news.">
+  <title>SONIQUE | Official Website</title>
+  <meta name="description" content="The official website of SONIQUE — South African singer-songwriter. Discover her story, music, videos, and contact details.">
 
   <link rel="icon" type="image/jpeg" href="images/favicon.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- ===== HEADER / NAV ===== -->
+  <div class="site-portrait" aria-hidden="true">
+    <img src="images/soniquehero.png" alt="">
+  </div>
+  <div class="site-backdrop-shade" aria-hidden="true"></div>
+
   <header class="site-header" id="site-header">
     <div class="header-inner">
-      <a href="index.html" class="logo">SONIQUE</a>
       <nav class="main-nav" id="main-nav" aria-label="Primary">
         <ul>
-          <li><a href="index.html" class="nav-link" aria-current="page">Home</a></li>
-          <li><a href="bio.html" class="nav-link">Bio</a></li>
-          <li><a href="music.html" class="nav-link">Music</a></li>
-          <li><a href="press.html" class="nav-link">Press Kit</a></li>
-          <li><a href="events.html" class="nav-link">Events</a></li>
-          <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <li><a href="#home" class="nav-link">Home</a></li>
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#music" class="nav-link">Music</a></li>
+          <li><a href="#videos" class="nav-link">Videos</a></li>
+          <li><a href="#events" class="nav-link">Events</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
         </ul>
       </nav>
       <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle menu">
@@ -38,120 +39,164 @@
   </header>
 
   <main id="main">
-
-    <!-- ===== HERO: name above a big photo ===== -->
-    <section class="hero">
-      <div class="blob blob-pink" style="width:340px; height:340px; top:-120px; left:-100px;"></div>
-      <div class="blob blob-blue" style="width:260px; height:260px; top:60%; right:-80px;"></div>
-      <div class="hero-inner">
-        <h1 class="hero-name">SONIQUE</h1>
-        <div class="hero-photo-wrap">
-          <div class="hero-photo-glow" aria-hidden="true"></div>
-          <img class="hero-photo-img" src="images/hero-pic.webp" alt="Sonique">
-          <img class="hero-signature" src="images/signature.webp" alt="Sonique's signature">
-        </div>
-        <div class="hero-actions">
-          <a href="music.html" class="btn btn-primary">Listen Now</a>
-          <a href="events.html" class="btn btn-primary">Upcoming Events</a>
-          <a href="contact.html" class="btn btn-primary">Contact</a>
-        </div>
-      </div>
+    <section class="hero-scroll" id="home" aria-label="SONIQUE">
+      <h1 class="hero-scroll-title">SONIQUE</h1>
+      <a class="hero-scroll-cue" href="#about">Scroll to explore <span aria-hidden="true">↓</span></a>
     </section>
 
-    <!-- ===== ABOUT TEASER ===== -->
-    <section class="about-teaser">
+    <section class="about-teaser" id="about">
       <div class="section-inner bio-grid">
-        <div class="bio-photo-frame reveal" style="position: static;">
-          <img class="bio-photo-img" src="images/bio-pic.webp" alt="Sonique portrait">
+        <div class="bio-photo-frame reveal">
+          <img class="bio-photo-img" src="images/bio-photograph.webp" alt="SONIQUE with her guitar" loading="lazy">
         </div>
-        <div class="reveal">
-          <p class="eyebrow">About</p>
-          <h2>Independent singer-songwriter.</h2>
-          <p class="section-lede">SONIQUE is a dynamic vocal powerhouse whose music blends raw emotion, infectious energy and authentic storytelling. Known for her captivating stage presence and heartfelt songwriting, she creates music that resonates deeply with audiences. You can read her full story on her bio page.</p>
-          <a href="bio.html" class="btn btn-outline btn-sm">Read Full Bio</a>
+        <div class="about-copy reveal">
+          <h2 class="about-heading">ABOUT</h2>
+          <p>Independent singer-songwriter SONIQUE is a dynamic vocal powerhouse whose music blends raw emotion, infectious energy and authentic storytelling.</p>
+          <p>Known for her captivating stage presence and heartfelt songwriting, she creates music that resonates deeply with audiences, taking listeners on a journey through happiness, heartbreak, passion and self-discovery.</p>
+          <p>Her distinctive alternative electro-pop sound, infused with an edgy and soulful twist, has established her as a bold new voice in South African music. Since the release of her debut single, “Why Are We Still Here”, in 2024, she has continued to build momentum with releases including “Marinade”, “Finding Your Way”, “My Calling”, “Uncaged”, “Black &amp; White” and most recently “Friends” in 2026.</p>
+          <p>Alongside national and international media exposure and a growing live performance presence, SONIQUE remains passionate about creating music that inspires connection, healing and hope. Her powerful vocals, magnetic performances and emotionally honest songwriting leave a lasting impact long after the final note.</p>
         </div>
       </div>
     </section>
 
-    <!-- ===== SOCIAL ===== -->
-<section class="social">
-  <div class="section-inner">
-    <p class="eyebrow">Follow</p>
-    <h2>Keep up with SONIQUE.</h2>
-    <p class="section-lede">Keep up to date with new releases, tour dates, and behind-the-scenes content.</p>
-    <div class="social-grid reveal">
-      <a href="https://www.instagram.com/soniquepitout/" class="social-card" target="_blank" rel="noopener">
-        <span class="social-card-name">Instagram</span>
-        <span class="social-card-handle">@soniquepitout</span>
-      </a>
-      <a href="https://www.tiktok.com/@soniquepitout" class="social-card" target="_blank" rel="noopener">
-        <span class="social-card-name">TikTok</span>
-        <span class="social-card-handle">@soniquepitout</span>
-      </a>
-      <a href="https://www.facebook.com/sonique.p2/" class="social-card" target="_blank" rel="noopener">
-        <span class="social-card-name">Facebook</span>
-        <span class="social-card-handle">@Sonique Pitout</span>
-      </a>
-      <a href="https://www.youtube.com/@soniquepitout" class="social-card" target="_blank" rel="noopener">
-        <span class="social-card-name">YouTube</span>
-        <span class="social-card-handle">@SONIQUE</span>
-      </a>
-    </div>
-    <div class="social-cta">
-      <a href="events.html" class="btn btn-primary btn-sm">See Upcoming Events</a>
-    </div>
-  </div>
-</section>
-
-    <!-- ===== LATEST RELEASE ===== -->
-    <section class="latest-release">
-      <div class="blob blob-peach" style="width:300px; height:300px; top:10%; left:-120px;"></div>
+    <section class="one-page-music" id="music">
       <div class="section-inner">
-        <p class="eyebrow">New Music</p>
-        <h2>Latest Release</h2>
-        <div class="release-card reveal">
-          <div class="release-art">
-            <!-- Replace with the single/EP cover art -->
-            <img src="images/cover-friends.webp" alt="Friends — single cover art">
-          </div>
-          <div class="release-info">
-            <h3>Friends</h3>
-            <span class="release-meta">SINGLE · 2026</span>
-            <p>A short line about the track — what it's about, how it feels, why it matters right now. Update this once the release is confirmed.</p>
-            <div class="platform-links">
-              <a href="#" class="platform-pill">Spotify</a>
-              <a href="#" class="platform-pill">Apple Music</a>
-              <a href="#" class="platform-pill">YouTube Music</a>
-            </div>
-          </div>
+        <h2>Music</h2>
+        <p class="section-lede">Songs for every part of the journey. Listen to SONIQUE on your favourite platform.</p>
+        <div class="artist-platforms">
+          <a href="https://open.spotify.com/artist/4aEmFQl0nUAtz6Rb0QreCB?si=ezgETPpQQf29qo93EwfSmg" class="platform-pill" target="_blank" rel="noopener">Spotify</a>
+          <a href="https://music.apple.com/za/artist/sonique/1751019260" class="platform-pill" target="_blank" rel="noopener">Apple Music</a>
+          <a href="https://music.youtube.com/@soniquepitout" class="platform-pill" target="_blank" rel="noopener">YouTube Music</a>
         </div>
-
-        <!-- Music video for the latest release -->
-        <div class="video-card reveal">
-          <p class="eyebrow">Watch</p>
-          <h3>Official Music Video</h3>
-          <div class="video-embed">
-            <iframe
-              src="https://www.youtube.com/embed/r1O-GlXFh9s"
-              title="Sonique — Official Music Video"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen
-              loading="lazy">
-            </iframe>
-          </div>
+        <div class="music-grid">
+          <article class="music-tile reveal">
+            <img src="images/cover-friends.webp" alt="Friends single cover" loading="lazy">
+            <div><h3>Friends</h3><p>2026 · A liberation anthem about growth, resilience and walking away stronger.</p></div>
+          </article>
+          <article class="music-tile reveal">
+            <img src="images/cover-black-and-white.webp" alt="Black &amp; White single cover" loading="lazy">
+            <div><h3>Black &amp; White</h3><p>2025 · An introspective song caught in the endless shades of “what if”.</p></div>
+          </article>
+          <article class="music-tile reveal">
+            <img src="images/cover-uncaged.webp" alt="Uncaged single cover" loading="lazy">
+            <div><h3>Uncaged</h3><p>A song about confronting change and emerging freer, braver and more aligned with yourself.</p></div>
+          </article>
+          <article class="music-tile reveal">
+            <img src="images/cover-my-calling.webp" alt="My Calling single cover" loading="lazy">
+            <div><h3>My Calling</h3><p>A call to trust yourself, embrace who you are and keep becoming.</p></div>
+          </article>
+          <article class="music-tile reveal">
+            <img src="images/cover-finding-your-way.webp" alt="Finding Your Way single cover" loading="lazy">
+            <div><h3>Finding Your Way</h3><p>A celebration of courage, authenticity and finding strength through challenges.</p></div>
+          </article>
+          <article class="music-tile reveal">
+            <img src="images/cover-marinade.webp" alt="Marinade single cover" loading="lazy">
+            <div><h3>Marinade</h3><p>A reminder that darkness can shape us into stronger, wiser and more powerful beings.</p></div>
+          </article>
+          <article class="music-tile reveal">
+            <img src="images/cover-why-are-we-still-here.webp" alt="Why Are We Still Here single cover" loading="lazy">
+            <div><h3>Why Are We Still Here</h3><p>2024 · An unfiltered question about existence, disconnection and the search for meaning.</p></div>
+          </article>
+          <article class="music-tile reveal">
+            <img src="images/cover-my-calling.webp" alt="Together We Are Stronger cover art" loading="lazy">
+            <div><h3>Together We Are Stronger</h3><p>2024 · A RADA Unearthed collaboration featuring SONIQUE and fellow artists.</p></div>
+          </article>
         </div>
-
-        <a href="music.html" class="btn btn-outline btn-sm">See All Music</a>
       </div>
     </section>
 
+    <section class="one-page-videos" id="videos">
+      <div class="section-inner">
+        <h2>Videos</h2>
+        <div class="video-grid">
+          <article class="video-card reveal">
+            <h3>Friends</h3>
+            <div class="video-embed"><iframe src="https://www.youtube.com/embed/r1O-GlXFh9s" title="Friends — Official Music Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>
+          </article>
+          <article class="video-card reveal">
+            <h3>Black &amp; White</h3>
+            <div class="video-embed"><iframe src="https://www.youtube.com/embed/hMhGKkodOMI" title="Black &amp; White — Official Music Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>
+          </article>
+          <article class="video-card reveal">
+            <h3>Uncaged</h3>
+            <div class="video-embed"><iframe src="https://www.youtube.com/embed/wKWFyWTeNK0" title="Uncaged — Official Music Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>
+          </article>
+          <article class="video-card reveal">
+            <h3>Marinade</h3>
+            <div class="video-embed"><iframe src="https://www.youtube.com/embed/4Lk9Vq7ptb0" title="Marinade — Official Music Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>
+          </article>
+          <article class="video-card reveal">
+            <h3>Yellow — Coldplay (Cover)</h3>
+            <div class="video-embed"><iframe src="https://www.youtube.com/embed/hvevESnhfp0" title="Yellow — Coldplay cover by SONIQUE" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>
+          </article>
+          <article class="video-card reveal">
+            <h3>Together We Are Stronger</h3>
+            <div class="video-embed"><iframe src="https://www.youtube.com/embed/cayNzPwLcRg" title="Together We Are Stronger — Official Music Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="one-page-events" id="events">
+      <div class="section-inner">
+        <h2>Events</h2>
+        <div class="events-widget-wrap reveal">
+          <script charset="utf-8" src="https://widgetv3.bandsintown.com/main.min.js"></script>
+          <a class="bit-widget-initializer"
+            data-artist-name="id_15638131"
+            data-background-color="rgba(253,240,230,1)"
+            data-text-color="rgba(0,0,0,1)"
+            data-font="Georgia"
+            data-date-format="MMM. DD YYYY"
+            data-date-orientation="vertical"
+            data-date-border-width="1px"
+            data-date-border-radius="10px"
+            data-event-ticket-cta-bg-color="rgba(252,227,203,1)"
+            data-event-rsvp-cta-text-color="rgba(0,0,0,1)"
+            data-event-rsvp-cta-bg-color="rgba(245,233,213,1)"
+            data-follow-section-position="top"
+            data-follow-section-alignment="center"
+            data-follow-section-cta-size="medium"
+            data-follow-section-cta-text="FOLLOW"
+            data-follow-section-cta-icon="true"
+            data-follow-section-cta-text-color="rgba(0,0,0,1)"
+            data-follow-section-cta-bg-color="rgba(252,232,208,1)"
+            data-follow-section-cta-border-color="rgba(0,0,0,1)"
+            data-play-my-city-position="bottom"
+            data-play-my-city-alignment="center"
+            data-play-my-city-header-text="Play in my city"
+            data-play-my-city-cta-size="medium"
+            data-play-my-city-cta-text="REQUEST A SHOW"
+            data-play-my-city-cta-bg-color="rgba(255,231,205,1)"
+            data-app-id="b83edb127f5bbe40b5e94f80fbfa35a6"
+            data-bit-logo-color="rgba(0,0,0,1)"></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="one-page-contact" id="contact">
+      <div class="section-inner">
+        <div class="contact-page-card reveal">
+          <div>
+            <h2>Contact</h2>
+          </div>
+          <div class="contact-email-row">
+            <a class="contact-email" href="mailto:manager@sonique.co.za">manager@sonique.co.za</a>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <!-- ===== FOOTER ===== -->
   <footer class="site-footer">
     <div class="section-inner footer-inner">
-      <div class="footer-brand">SONIQUE</div>
+      <a href="#home" class="footer-brand">SONIQUE</a>
+      <ul class="social-links" aria-label="Follow SONIQUE">
+        <li><a href="https://www.instagram.com/soniquepitout/" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.tiktok.com/@soniquepitout" target="_blank" rel="noopener">TikTok</a></li>
+        <li><a href="https://www.facebook.com/sonique.p2/" target="_blank" rel="noopener">Facebook</a></li>
+        <li><a href="https://www.youtube.com/@soniquepitout" target="_blank" rel="noopener">YouTube</a></li>
+      </ul>
       <p class="footer-copy">&copy; <span class="js-year"></span> SONIQUE. All rights reserved.</p>
     </div>
   </footer>
