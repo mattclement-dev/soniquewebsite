@@ -5,24 +5,41 @@
 document.addEventListener('DOMContentLoaded', () => {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  initHeaderScroll();
   initMobileMenu();
+  initHeroScroll(prefersReducedMotion);
   initScrollReveal(prefersReducedMotion);
   initSignupForm();
   initFooterYear();
 });
 
-/* ---------- Header: add background once page is scrolled ---------- */
-function initHeaderScroll() {
-  const header = document.getElementById('site-header');
-  if (!header) return;
+/* ---------- Hero: scroll the name away and deepen the opening image ---------- */
+function initHeroScroll(prefersReducedMotion) {
+  const hero = document.querySelector('.hero-scroll');
+  const title = document.querySelector('.hero-scroll-title');
+  const shade = document.querySelector('.site-backdrop-shade');
+  if (!hero || !title || !shade) return;
 
-  const onScroll = () => {
-    header.classList.toggle('scrolled', window.scrollY > 40);
+  document.body.classList.toggle('hero-scroll-enabled', !prefersReducedMotion);
+  let frameRequested = false;
+  const update = () => {
+    const progress = Math.min(1, Math.max(0, window.scrollY / (window.innerHeight * 0.85)));
+    if (!prefersReducedMotion) {
+      title.style.transform = `translate3d(-50%, ${-progress * 92}vh, 0)`;
+      title.style.opacity = String(Math.max(0, 1 - progress * 1.4));
+    }
+    shade.style.setProperty('--hero-shade', String(progress * 0.84));
+    frameRequested = false;
   };
 
-  onScroll();
+  const onScroll = () => {
+    if (frameRequested) return;
+    frameRequested = true;
+    window.requestAnimationFrame(update);
+  };
+
+  update();
   window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
 }
 
 /* ---------- Mobile menu toggle ---------- */
