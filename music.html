@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Music - SONIQUE</title>
-  <meta name="description" content="Stream Sonique's music on Spotify, Apple Music, YouTube Music, and more.">
+  <meta name="description" content="Explore SONIQUE's releases and watch her music videos.">
 
   <link rel="icon" type="image/jpeg" href="images/favicon.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,7 +26,7 @@
           <li><a href="bio.html" class="nav-link">Bio</a></li>
           <li><a href="music.html" class="nav-link" aria-current="page">Music</a></li>
           <li><a href="press.html" class="nav-link">Press Kit</a></li>
-          <li><a href="events.html" class="nav-link">Events</a></li>          
+          <li><a href="events.html" class="nav-link">Events</a></li>
           <li><a href="contact.html" class="nav-link">Contact</a></li>
         </ul>
       </nav>
@@ -37,13 +37,12 @@
   </header>
 
   <main id="main">
-
     <section class="page-hero">
       <div class="blob blob-blue" style="width:300px; height:300px; top:-80px; left:-100px;"></div>
       <div class="page-hero-inner">
         <p class="eyebrow">Music</p>
         <h1>Listen Everywhere</h1>
-        <p>Every release, with links to every major streaming platform. Add new singles and EPs here as they drop.</p>
+        <p>Explore SONIQUE's releases and listen on your favourite platform.</p>
         <div class="platform-links" style="margin-top: 1.5rem;">
           <a href="https://open.spotify.com/artist/4aEmFQl0nUAtz6Rb0QreCB?si=ezgETPpQQf29qo93EwfSmg" class="platform-pill">Spotify Profile</a>
           <a href="https://music.apple.com/za/artist/sonique/1751019260" class="platform-pill">Apple Music Profile</a>
@@ -53,280 +52,109 @@
       </div>
     </section>
 
-    <section class="releases">
+    <section class="releases" aria-labelledby="releases-title">
       <div class="section-inner">
         <p class="eyebrow">Discography</p>
-        <h2>Releases</h2>
+        <h2 id="releases-title">Releases</h2>
+        <p class="section-lede">Scroll to explore every release. Add each song's smart link to both its cover and title link.</p>
 
-        <!--
-          RELEASE CARD TEMPLATE
-          Each song below is a pair: a .release-card (cover art + info) and a
-          .video-card (music video embed) right after it.
-
-          COVER ART: swap the src on each .release-art img for the real file
-          in images/ — the filenames below are just a naming suggestion.
-
-          VIDEO: replace VIDEO_ID in each iframe src with the real YouTube
-          video ID. If a song doesn't have a music video, just delete that
-          song's whole .video-card block.
-        -->
-
-        <!-- Friends — 2026 -->
-        <div class="release-card reveal">
-          <div class="release-art">
-            <img src="images/cover-friends.webp" alt="Friends — single cover art">
-          </div>
-          <div class="release-info">
-            <h3>Friends</h3>
-            <span class="release-meta">SINGLE · 2026</span>
-            <p>It’s liberation with attitude. Transforming disappointment into empowerment. An anthem of growth, resilience and self-respect, a declaration of outgrowing negativity and walking away stronger.</p>
-            <div class="platform-links">
-              <a href="https://open.spotify.com/track/5cHYmPv0cgpvhwu5UuMZZh?si=3154eb3b166c4f8c" class="platform-pill">Spotify</a>
-              <a href="https://music.apple.com/za/song/friends/1892298124" class="platform-pill">Apple Music</a>
-              <a href="https://music.youtube.com/watch?v=T2DvyhcgCLY&si=Az4vi8HorUI5bS7G" class="platform-pill">YouTube Music</a>
-              <a href="https://music.amazon.com/tracks/B0GWQGGPHH?marketplaceId=ATVPDKIKX0DER&musicTerritory=US&ref=dm_sh_6zrsOIR3NClkLoZL0A3j5GRmf" class="platform-pill">Amazon Music</a>
-              <a href="https://link.deezer.com/s/34ccQ6UT93ek4KgIVafK1" class="platform-pill">Deezer</a>
-              <a href="https://tidal.com/album/514751016/u" class="platform-pill">Tidal</a>
-            </div>
-          </div>
-        </div>
-        <div class="video-card reveal">
-          <p class="eyebrow">Watch</p>
-          <h3>Friends — Official Music Video</h3>
-          <div class="video-embed">
-            <iframe
-              src="https://www.youtube.com/embed/r1O-GlXFh9s"
-              title="Friends — Official Music Video"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen
-              loading="lazy">
-            </iframe>
-          </div>
-        </div>
-
-        <!-- Black & White -->
-        <div class="release-card reveal">
-          <div class="release-art">
-            <img src="images/cover-black-and-white.webp" alt="Black & White — single cover art">
-          </div>
-          <div class="release-info">
-            <h3>Black &amp; White</h3>
-            <span class="release-meta">SINGLE · 2025</span>
-            <p>Captures the feeling of being chased by something unseen, caught in the endless loop of ‘what ifs’, where nothing feels clear. There’s no simple yes or no, right or wrong - only endless shades of grey.</p>
-            <div class="platform-links">
-              <a href="https://open.spotify.com/track/043UweN8RSfvCOxWzsd4FY?si=4ec27d92d2174b8d" class="platform-pill">Spotify</a>
-              <a href="https://music.apple.com/us/song/black-white/1831521155" class="platform-pill">Apple Music</a>
-              <a href="https://music.youtube.com/watch?v=Asqw1id-CeM&si=YSGG8jtcJcj9FRGi" class="platform-pill">YouTube Music</a>
-              <a href="https://music.amazon.com/tracks/B0FLDRZ84J?marketplaceId=ATVPDKIKX0DER&musicTerritory=US&ref=dm_sh_v5gOaXRkqIFVQRLrnppNJ27YQ" class="platform-pill">Amazon Music</a>
-              <a href="https://link.deezer.com/s/34ccYrKlKkKUWMS7d2GG6" class="platform-pill">Deezer</a>
-              <a href="https://tidal.com/track/452514009/u" class="platform-pill">Tidal</a>
-            </div>
-          </div>
-        </div>
-        <div class="video-card reveal">
-          <p class="eyebrow">Watch</p>
-          <h3>Black &amp; White — Official Music Video</h3>
-          <div class="video-embed">
-            <iframe
-              src="https://www.youtube.com/embed/hMhGKkodOMI"
-              title="Black & White — Official Music Video"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen
-              loading="lazy">
-            </iframe>
-          </div>
-        </div>
-
-        <!-- Uncaged -->
-        <div class="release-card reveal">
-          <div class="release-art">
-            <img src="images/cover-uncaged.webp" alt="Uncaged — single cover art">
-          </div>
-          <div class="release-info">
-            <h3>Uncaged</h3>
-            <span class="release-meta">SINGLE · 2025</span>
-            <p>Speaks to the kind of growth that comes through struggle. Woven through the lyrics is the metaphor of metamorphosis: the challenge of shedding old identities, confronting internal battles, enduring the pain of change and emerging freer, braver, being more aligned with your true self.</p>
-            <div class="platform-links">
-              <a href="https://open.spotify.com/track/5elkSCDvJTsrC6aNM25VQE?si=ae63455b017047ef" class="platform-pill">Spotify</a>
-              <a href="https://music.apple.com/us/song/uncaged/1812906952" class="platform-pill">Apple Music</a>
-              <a href="https://music.youtube.com/watch?v=GZkYeWWiV5w&si=UGeHnqhEDiO_28nA" class="platform-pill">YouTube Music</a>
-              <a href="https://music.amazon.com/tracks/B0F7RM4XVD?marketplaceId=ATVPDKIKX0DER&musicTerritory=US&ref=dm_sh_Cir6xr1EeHBFyUv3bNhaVl6vz" class="platform-pill">Amazon Music</a>
-              <a href="https://link.deezer.com/s/34cd2MmDnO9DtZT6tiNyX" class="platform-pill">Deezer</a>
-              <a href="https://tidal.com/track/434459505/u" class="platform-pill">Tidal</a>
-            </div>
-          </div>
-        </div>
-        <div class="video-card reveal">
-          <p class="eyebrow">Watch</p>
-          <h3>Uncaged — Official Music Video</h3>
-          <div class="video-embed">
-            <iframe
-              src="https://www.youtube.com/embed/wKWFyWTeNK0"
-              title="Uncaged — Official Music Video"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen
-              loading="lazy">
-            </iframe>
-          </div>
-        </div>
-
-        <!-- My Calling -->
-        <div class="release-card reveal">
-          <div class="release-art">
-            <img src="images/cover-my-calling.webp" alt="My Calling — single cover art">
-          </div>
-          <div class="release-info">
-            <h3>My Calling</h3>
-            <span class="release-meta">SINGLE · Add year</span>
-            <p>A song that speaks to the power of self-discovery, honesty and confidence. It’s a call to rise above doubt, trust in oneself and embrace your true self without fear or compromise while on your journey of becoming.</p>
-            <div class="platform-links">
-              <a href="#" class="platform-pill">Spotify</a>
-              <a href="#" class="platform-pill">Apple Music</a>
-              <a href="#" class="platform-pill">YouTube Music</a>
-              <a href="#" class="platform-pill">Amazon Music</a>
-              <a href="#" class="platform-pill">Deezer</a>
-              <a href="#" class="platform-pill">SoundCloud</a>
-              <a href="#" class="platform-pill">Tidal</a>
-            </div>
-          </div>
-        </div>
-
-
-        <!-- Finding Your Way -->
-        <div class="release-card reveal">
-          <div class="release-art">
-            <img src="images/cover-finding-your-way.webp" alt="Finding Your Way — single cover art">
-          </div>
-          <div class="release-info">
-            <h3>Finding Your Way</h3>
-            <span class="release-meta">SINGLE · Add year</span>
-            <p>A celebration of living in the moment, embracing life with courage and authenticity. It's about finding strength when faced with challenges, staying true to yourself and discovering your purpose.</p>
-            <div class="platform-links">
-              <a href="#" class="platform-pill">Spotify</a>
-              <a href="#" class="platform-pill">Apple Music</a>
-              <a href="#" class="platform-pill">YouTube Music</a>
-              <a href="#" class="platform-pill">Amazon Music</a>
-              <a href="#" class="platform-pill">Deezer</a>
-              <a href="#" class="platform-pill">SoundCloud</a>
-              <a href="#" class="platform-pill">Tidal</a>
-            </div>
-          </div>
-        </div>
-        
-
-        <!-- Marinade -->
-        <div class="release-card reveal">
-          <div class="release-art">
-            <img src="images/cover-marinade.webp" alt="Marinade — single cover art">
-          </div>
-          <div class="release-info">
-            <h3>Marinade</h3>
-            <span class="release-meta">SINGLE · Add year</span>
-            <p>Marinade is about realising that our darkness is part of the journey that shapes us to be stronger, wiser and powerful beings. One should stay confident, keep believing and discover your purpose.</p>
-            <div class="platform-links">
-              <a href="#" class="platform-pill">Spotify</a>
-              <a href="#" class="platform-pill">Apple Music</a>
-              <a href="#" class="platform-pill">YouTube Music</a>
-              <a href="#" class="platform-pill">Amazon Music</a>
-              <a href="#" class="platform-pill">Deezer</a>
-              <a href="#" class="platform-pill">SoundCloud</a>
-              <a href="#" class="platform-pill">Tidal</a>
-            </div>
-          </div>
-        </div>
-        <div class="video-card reveal">
-          <p class="eyebrow">Watch</p>
-          <h3>Marinade — Official Music Video</h3>
-          <div class="video-embed">
-            <iframe
-              src="https://www.youtube.com/embed/4Lk9Vq7ptb0"
-              title="Marinade — Official Music Video"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen
-              loading="lazy">
-            </iframe>
-          </div>
-        </div>
-
-        <!-- Why Are We Still Here -->
-        <div class="release-card reveal">
-          <div class="release-art">
-            <img src="images/cover-why-are-we-still-here.webp" alt="Why Are We Still Here — single cover art">
-          </div>
-          <div class="release-info">
-            <h3>Why Are We Still Here</h3>
-            <span class="release-meta">SINGLE · 2025</span>
-            <p>An introspective track that questions our existence and a generation's quiet unrest. Torn between nostalgia, disconnection and the search for meaning. It's an unfiltered question mark aimed straight at the system and at ourselves.</p>
-            <div class="platform-links">
-              <a href="https://open.spotify.com/track/4LDU91BmPBTdb70bZokdhq?si=d20d40d08fed474b" class="platform-pill">Spotify</a>
-              <a href="#" class="platform-pill">Apple Music</a>
-              <a href="#" class="platform-pill">YouTube Music</a>
-              <a href="#" class="platform-pill">Amazon Music</a>
-              <a href="#" class="platform-pill">Deezer</a>
-              <a href="#" class="platform-pill">SoundCloud</a>
-              <a href="#" class="platform-pill">Tidal</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Yellow - Coldplay (Cover) -->
-        <div class="video-card reveal">
-          <p class="eyebrow">Watch</p>
-          <h3>Yellow - Coldplay (Cover)</h3>
-          <div class="video-embed">
-            <iframe
-              src="https://www.youtube.com/embed/hvevESnhfp0"
-              title="Yellow - Coldplay (Cover)"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen
-              loading="lazy">
-            </iframe>
-          </div>
-        </div>
-
-         <!-- Together We Are Stronger -->
-        <div class="release-card reveal">
-          <div class="release-art">
-            <img src="images/" alt="Together We Are Stronger — cover art">
-          </div>
-          <div class="release-info">
-            <h3>Together We Are Stronger</h3>
-            <span class="release-meta">SINGLE · 2024</span>
-            <p>A dynamic RADA Unearthed collaboration track featuring the voices of several talented artists including iSandi, Ramelo, Pedro Barbosa, Lia Elise, SONIQUE, Ross Learmonth, SEVVEN, Me-Ko, SeanJ and Mark Beling”.</p>
-            <div class="platform-links">
-              <a href="#" class="platform-pill">Spotify</a>
-              <a href="#" class="platform-pill">Apple Music</a>
-              <a href="#" class="platform-pill">YouTube Music</a>
-              <a href="#" class="platform-pill">Amazon Music</a>
-              <a href="#" class="platform-pill">Deezer</a>
-              <a href="#" class="platform-pill">SoundCloud</a>
-              <a href="#" class="platform-pill">Tidal</a>
-            </div>
-          </div>
-        </div>
-        <div class="video-card reveal">
-          <p class="eyebrow">Watch</p>
-          <h3>Together We Are Stronger — Official Music Video</h3>
-          <div class="video-embed">
-            <iframe
-              src="https://www.youtube.com/embed/cayNzPwLcRg"
-              title="Together We Are Stronger — Official Music Video"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen
-              loading="lazy">
-            </iframe>
-          </div>
-        </div>
-
+        <ul class="release-carousel" aria-label="SONIQUE releases" tabindex="0">
+          <li class="release-item">
+            <a class="release-cover-link" href="#" aria-label="Listen to Friends">
+              <img src="images/cover-friends.webp" alt="Friends single cover" loading="lazy">
+            </a>
+            <h3><a class="release-title-link" href="#">Friends</a></h3>
+          </li>
+          <li class="release-item">
+            <a class="release-cover-link" href="#" aria-label="Listen to Black &amp; White">
+              <img src="images/cover-black-and-white.webp" alt="Black &amp; White single cover" loading="lazy">
+            </a>
+            <h3><a class="release-title-link" href="#">Black &amp; White</a></h3>
+          </li>
+          <li class="release-item">
+            <a class="release-cover-link" href="#" aria-label="Listen to Uncaged">
+              <img src="images/cover-uncaged.webp" alt="Uncaged single cover" loading="lazy">
+            </a>
+            <h3><a class="release-title-link" href="#">Uncaged</a></h3>
+          </li>
+          <li class="release-item">
+            <a class="release-cover-link" href="#" aria-label="Listen to My Calling">
+              <img src="images/cover-my-calling.webp" alt="My Calling single cover" loading="lazy">
+            </a>
+            <h3><a class="release-title-link" href="#">My Calling</a></h3>
+          </li>
+          <li class="release-item">
+            <a class="release-cover-link" href="#" aria-label="Listen to Finding Your Way">
+              <img src="images/cover-finding-your-way.webp" alt="Finding Your Way single cover" loading="lazy">
+            </a>
+            <h3><a class="release-title-link" href="#">Finding Your Way</a></h3>
+          </li>
+          <li class="release-item">
+            <a class="release-cover-link" href="#" aria-label="Listen to Marinade">
+              <img src="images/cover-marinade.webp" alt="Marinade single cover" loading="lazy">
+            </a>
+            <h3><a class="release-title-link" href="#">Marinade</a></h3>
+          </li>
+          <li class="release-item">
+            <a class="release-cover-link" href="#" aria-label="Listen to Why Are We Still Here">
+              <img src="images/cover-why-are-we-still-here.webp" alt="Why Are We Still Here single cover" loading="lazy">
+            </a>
+            <h3><a class="release-title-link" href="#">Why Are We Still Here</a></h3>
+          </li>
+          <li class="release-item">
+            <a class="release-cover-link" href="#" aria-label="Listen to Together We Are Stronger">
+              <img src="images/cover-my-calling.webp" alt="Together We Are Stronger cover art placeholder" loading="lazy">
+            </a>
+            <h3><a class="release-title-link" href="#">Together We Are Stronger</a></h3>
+          </li>
+        </ul>
       </div>
     </section>
 
+    <section class="music-videos" aria-labelledby="music-videos-title">
+      <div class="section-inner">
+        <p class="eyebrow">Watch</p>
+        <h2 id="music-videos-title">Music Videos</h2>
+        <div class="music-videos-grid">
+          <article class="music-video">
+            <h3>Friends</h3>
+            <div class="video-embed">
+              <iframe src="https://www.youtube.com/embed/r1O-GlXFh9s" title="Friends — Official Music Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+            </div>
+          </article>
+          <article class="music-video">
+            <h3>Black &amp; White</h3>
+            <div class="video-embed">
+              <iframe src="https://www.youtube.com/embed/hMhGKkodOMI" title="Black &amp; White — Official Music Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+            </div>
+          </article>
+          <article class="music-video">
+            <h3>Uncaged</h3>
+            <div class="video-embed">
+              <iframe src="https://www.youtube.com/embed/wKWFyWTeNK0" title="Uncaged — Official Music Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+            </div>
+          </article>
+          <article class="music-video">
+            <h3>Marinade</h3>
+            <div class="video-embed">
+              <iframe src="https://www.youtube.com/embed/4Lk9Vq7ptb0" title="Marinade — Official Music Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+            </div>
+          </article>
+          <article class="music-video">
+            <h3>Yellow - Coldplay (Cover)</h3>
+            <div class="video-embed">
+              <iframe src="https://www.youtube.com/embed/hvevESnhfp0" title="Yellow - Coldplay (Cover)" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+            </div>
+          </article>
+          <article class="music-video">
+            <h3>Together We Are Stronger</h3>
+            <div class="video-embed">
+              <iframe src="https://www.youtube.com/embed/cayNzPwLcRg" title="Together We Are Stronger — Official Music Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">

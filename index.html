@@ -41,9 +41,9 @@
   <main id="main">
     <section class="hero-scroll" id="home" aria-label="SONIQUE">
       <h1 class="hero-scroll-title">SONIQUE</h1>
-      <a class="hero-scroll-cue" href="#about">Scroll to explore <span aria-hidden="true">↓</span></a>
     </section>
 
+    <div class="site-content-mask">
     <section class="about-teaser" id="about">
       <div class="section-inner bio-grid">
         <div class="bio-photo-frame reveal">
@@ -59,81 +59,116 @@
       </div>
     </section>
 
+    <section class="photo-gallery" aria-label="SONIQUE photo gallery">
+      <div class="photo-gallery-inner">
+        <ul class="photo-carousel" aria-label="SONIQUE photos" tabindex="0">
+          <li><img src="images/presspic-1.webp" alt="SONIQUE portrait" loading="lazy"></li>
+          <li><img src="images/presspic-8.webp" alt="SONIQUE performing on stage" loading="lazy"></li>
+          <li><img src="images/presspic-3.webp" alt="SONIQUE portrait" loading="lazy"></li>
+          <li><img src="images/presspic-4.webp" alt="SONIQUE portrait" loading="lazy"></li>
+          <li><img src="images/presspic-6.webp" alt="SONIQUE portrait" loading="lazy"></li>
+          <li><img src="images/presspic-7.webp" alt="SONIQUE portrait" loading="lazy"></li>
+        </ul>
+      </div>
+    </section>
+
     <section class="one-page-music" id="music">
       <div class="section-inner">
         <h2>Music</h2>
-        <p class="section-lede">Songs for every part of the journey. Listen to SONIQUE on your favourite platform.</p>
-        <div class="artist-platforms">
-          <a href="https://open.spotify.com/artist/4aEmFQl0nUAtz6Rb0QreCB?si=ezgETPpQQf29qo93EwfSmg" class="platform-pill" target="_blank" rel="noopener">Spotify</a>
-          <a href="https://music.apple.com/za/artist/sonique/1751019260" class="platform-pill" target="_blank" rel="noopener">Apple Music</a>
-          <a href="https://music.youtube.com/@soniquepitout" class="platform-pill" target="_blank" rel="noopener">YouTube Music</a>
-        </div>
-        <div class="music-grid">
-          <article class="music-tile reveal">
-            <img src="images/cover-friends.webp" alt="Friends single cover" loading="lazy">
-            <div><h3>Friends</h3><p>2026 · A liberation anthem about growth, resilience and walking away stronger.</p></div>
-          </article>
-          <article class="music-tile reveal">
-            <img src="images/cover-black-and-white.webp" alt="Black &amp; White single cover" loading="lazy">
-            <div><h3>Black &amp; White</h3><p>2025 · An introspective song caught in the endless shades of “what if”.</p></div>
-          </article>
-          <article class="music-tile reveal">
-            <img src="images/cover-uncaged.webp" alt="Uncaged single cover" loading="lazy">
-            <div><h3>Uncaged</h3><p>A song about confronting change and emerging freer, braver and more aligned with yourself.</p></div>
-          </article>
-          <article class="music-tile reveal">
-            <img src="images/cover-my-calling.webp" alt="My Calling single cover" loading="lazy">
-            <div><h3>My Calling</h3><p>A call to trust yourself, embrace who you are and keep becoming.</p></div>
-          </article>
-          <article class="music-tile reveal">
-            <img src="images/cover-finding-your-way.webp" alt="Finding Your Way single cover" loading="lazy">
-            <div><h3>Finding Your Way</h3><p>A celebration of courage, authenticity and finding strength through challenges.</p></div>
-          </article>
-          <article class="music-tile reveal">
-            <img src="images/cover-marinade.webp" alt="Marinade single cover" loading="lazy">
-            <div><h3>Marinade</h3><p>A reminder that darkness can shape us into stronger, wiser and more powerful beings.</p></div>
-          </article>
-          <article class="music-tile reveal">
-            <img src="images/cover-why-are-we-still-here.webp" alt="Why Are We Still Here single cover" loading="lazy">
-            <div><h3>Why Are We Still Here</h3><p>2024 · An unfiltered question about existence, disconnection and the search for meaning.</p></div>
-          </article>
-          <article class="music-tile reveal">
-            <img src="images/cover-my-calling.webp" alt="Together We Are Stronger cover art" loading="lazy">
-            <div><h3>Together We Are Stronger</h3><p>2024 · A RADA Unearthed collaboration featuring SONIQUE and fellow artists.</p></div>
-          </article>
-        </div>
+        <ul class="release-carousel" aria-label="SONIQUE releases" tabindex="0">
+          <li class="release-item">
+            <a class="release-cover-link" href="#" aria-label="Listen to Friends">
+              <img src="images/cover-friends.webp" alt="Friends single cover" loading="lazy">
+            </a>
+            <h3><a class="release-title-link" href="#">Friends</a></h3>
+          </li>
+          <li class="release-item">
+            <a class="release-cover-link" href="#" aria-label="Listen to Black &amp; White">
+              <img src="images/cover-black-and-white.webp" alt="Black &amp; White single cover" loading="lazy">
+            </a>
+            <h3><a class="release-title-link" href="#">Black &amp; White</a></h3>
+          </li>
+          <li class="release-item">
+            <a class="release-cover-link" href="#" aria-label="Listen to Uncaged">
+              <img src="images/cover-uncaged.webp" alt="Uncaged single cover" loading="lazy">
+            </a>
+            <h3><a class="release-title-link" href="#">Uncaged</a></h3>
+          </li>
+          <li class="release-item">
+            <a class="release-cover-link" href="#" aria-label="Listen to My Calling">
+              <img src="images/cover-my-calling.webp" alt="My Calling single cover" loading="lazy">
+            </a>
+            <h3><a class="release-title-link" href="#">My Calling</a></h3>
+          </li>
+          <li class="release-item">
+            <a class="release-cover-link" href="#" aria-label="Listen to Finding Your Way">
+              <img src="images/cover-finding-your-way.webp" alt="Finding Your Way single cover" loading="lazy">
+            </a>
+            <h3><a class="release-title-link" href="#">Finding Your Way</a></h3>
+          </li>
+          <li class="release-item">
+            <a class="release-cover-link" href="#" aria-label="Listen to Marinade">
+              <img src="images/cover-marinade.webp" alt="Marinade single cover" loading="lazy">
+            </a>
+            <h3><a class="release-title-link" href="#">Marinade</a></h3>
+          </li>
+          <li class="release-item">
+            <a class="release-cover-link" href="#" aria-label="Listen to Why Are We Still Here">
+              <img src="images/cover-why-are-we-still-here.webp" alt="Why Are We Still Here single cover" loading="lazy">
+            </a>
+            <h3><a class="release-title-link" href="#">Why Are We Still Here</a></h3>
+          </li>
+          <li class="release-item">
+            <a class="release-cover-link" href="#" aria-label="Listen to Together We Are Stronger">
+              <img src="images/cover-my-calling.webp" alt="Together We Are Stronger cover art placeholder" loading="lazy">
+            </a>
+            <h3><a class="release-title-link" href="#">Together We Are Stronger</a></h3>
+          </li>
+        </ul>
       </div>
     </section>
 
     <section class="one-page-videos" id="videos">
       <div class="section-inner">
         <h2>Videos</h2>
-        <div class="video-grid">
-          <article class="video-card reveal">
+        <ul class="video-carousel" aria-label="SONIQUE videos" tabindex="0">
+          <li class="video-carousel-item">
+            <a class="video-thumbnail-link" href="https://www.youtube.com/watch?v=r1O-GlXFh9s" target="_blank" rel="noopener noreferrer" aria-label="Watch Friends on YouTube">
+              <img src="https://img.youtube.com/vi/r1O-GlXFh9s/hqdefault.jpg" alt="" loading="lazy">
+            </a>
             <h3>Friends</h3>
-            <div class="video-embed"><iframe src="https://www.youtube.com/embed/r1O-GlXFh9s" title="Friends — Official Music Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>
-          </article>
-          <article class="video-card reveal">
+          </li>
+          <li class="video-carousel-item">
+            <a class="video-thumbnail-link" href="https://www.youtube.com/watch?v=hMhGKkodOMI" target="_blank" rel="noopener noreferrer" aria-label="Watch Black &amp; White on YouTube">
+              <img src="https://img.youtube.com/vi/hMhGKkodOMI/hqdefault.jpg" alt="" loading="lazy">
+            </a>
             <h3>Black &amp; White</h3>
-            <div class="video-embed"><iframe src="https://www.youtube.com/embed/hMhGKkodOMI" title="Black &amp; White — Official Music Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>
-          </article>
-          <article class="video-card reveal">
+          </li>
+          <li class="video-carousel-item">
+            <a class="video-thumbnail-link" href="https://www.youtube.com/watch?v=wKWFyWTeNK0" target="_blank" rel="noopener noreferrer" aria-label="Watch Uncaged on YouTube">
+              <img src="https://img.youtube.com/vi/wKWFyWTeNK0/hqdefault.jpg" alt="" loading="lazy">
+            </a>
             <h3>Uncaged</h3>
-            <div class="video-embed"><iframe src="https://www.youtube.com/embed/wKWFyWTeNK0" title="Uncaged — Official Music Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>
-          </article>
-          <article class="video-card reveal">
+          </li>
+          <li class="video-carousel-item">
+            <a class="video-thumbnail-link" href="https://www.youtube.com/watch?v=4Lk9Vq7ptb0" target="_blank" rel="noopener noreferrer" aria-label="Watch Marinade on YouTube">
+              <img src="https://img.youtube.com/vi/4Lk9Vq7ptb0/hqdefault.jpg" alt="" loading="lazy">
+            </a>
             <h3>Marinade</h3>
-            <div class="video-embed"><iframe src="https://www.youtube.com/embed/4Lk9Vq7ptb0" title="Marinade — Official Music Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>
-          </article>
-          <article class="video-card reveal">
+          </li>
+          <li class="video-carousel-item">
+            <a class="video-thumbnail-link" href="https://www.youtube.com/watch?v=hvevESnhfp0" target="_blank" rel="noopener noreferrer" aria-label="Watch Yellow — Coldplay cover on YouTube">
+              <img src="https://img.youtube.com/vi/hvevESnhfp0/hqdefault.jpg" alt="" loading="lazy">
+            </a>
             <h3>Yellow — Coldplay (Cover)</h3>
-            <div class="video-embed"><iframe src="https://www.youtube.com/embed/hvevESnhfp0" title="Yellow — Coldplay cover by SONIQUE" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>
-          </article>
-          <article class="video-card reveal">
+          </li>
+          <li class="video-carousel-item">
+            <a class="video-thumbnail-link" href="https://www.youtube.com/watch?v=cayNzPwLcRg" target="_blank" rel="noopener noreferrer" aria-label="Watch Together We Are Stronger on YouTube">
+              <img src="https://img.youtube.com/vi/cayNzPwLcRg/hqdefault.jpg" alt="" loading="lazy">
+            </a>
             <h3>Together We Are Stronger</h3>
-            <div class="video-embed"><iframe src="https://www.youtube.com/embed/cayNzPwLcRg" title="Together We Are Stronger — Official Music Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>
-          </article>
-        </div>
+          </li>
+        </ul>
       </div>
     </section>
 
@@ -144,48 +179,47 @@
           <script charset="utf-8" src="https://widgetv3.bandsintown.com/main.min.js"></script>
           <a class="bit-widget-initializer"
             data-artist-name="id_15638131"
-            data-background-color="rgba(253,240,230,1)"
-            data-text-color="rgba(0,0,0,1)"
+            data-background-color="rgba(18,16,13,0.78)"
+            data-text-color="rgba(216,183,146,1)"
             data-font="Georgia"
             data-date-format="MMM. DD YYYY"
             data-date-orientation="vertical"
             data-date-border-width="1px"
             data-date-border-radius="10px"
-            data-event-ticket-cta-bg-color="rgba(252,227,203,1)"
-            data-event-rsvp-cta-text-color="rgba(0,0,0,1)"
-            data-event-rsvp-cta-bg-color="rgba(245,233,213,1)"
+            data-event-ticket-cta-text-color="rgba(216,183,146,1)"
+            data-event-ticket-cta-bg-color="rgba(43,30,20,0.78)"
+            data-event-rsvp-cta-text-color="rgba(216,183,146,1)"
+            data-event-rsvp-cta-bg-color="rgba(43,30,20,0.78)"
             data-follow-section-position="top"
             data-follow-section-alignment="center"
             data-follow-section-cta-size="medium"
             data-follow-section-cta-text="FOLLOW"
             data-follow-section-cta-icon="true"
-            data-follow-section-cta-text-color="rgba(0,0,0,1)"
-            data-follow-section-cta-bg-color="rgba(252,232,208,1)"
-            data-follow-section-cta-border-color="rgba(0,0,0,1)"
+            data-follow-section-cta-text-color="rgba(216,183,146,1)"
+            data-follow-section-cta-bg-color="rgba(43,30,20,0.78)"
+            data-follow-section-cta-border-color="rgba(216,183,146,0.5)"
             data-play-my-city-position="bottom"
             data-play-my-city-alignment="center"
             data-play-my-city-header-text="Play in my city"
             data-play-my-city-cta-size="medium"
             data-play-my-city-cta-text="REQUEST A SHOW"
-            data-play-my-city-cta-bg-color="rgba(255,231,205,1)"
+            data-play-my-city-cta-text-color="rgba(216,183,146,1)"
+            data-play-my-city-cta-bg-color="rgba(43,30,20,0.78)"
             data-app-id="b83edb127f5bbe40b5e94f80fbfa35a6"
-            data-bit-logo-color="rgba(0,0,0,1)"></a>
+            data-bit-logo-color="rgba(216,183,146,1)"></a>
         </div>
       </div>
     </section>
 
     <section class="one-page-contact" id="contact">
-      <div class="section-inner">
-        <div class="contact-page-card reveal">
-          <div>
-            <h2>Contact</h2>
-          </div>
-          <div class="contact-email-row">
-            <a class="contact-email" href="mailto:manager@sonique.co.za">manager@sonique.co.za</a>
-          </div>
+      <div class="section-inner contact-content">
+        <h2>Contact</h2>
+        <div class="contact-email-row">
+          <a class="contact-email" href="mailto:manager@sonique.co.za">manager@sonique.co.za</a>
         </div>
       </div>
     </section>
+    </div>
   </main>
 
   <footer class="site-footer">
