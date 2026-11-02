@@ -894,7 +894,8 @@ main { position: relative; }
   padding: clamp(2rem, 3vw, 3rem) 0 clamp(1.5rem, 2vw, 2rem) !important;
   scroll-margin-top: 5rem;
 }
-.photo-gallery::before {
+.photo-gallery::before,
+.one-page-music::before {
   position: absolute;
   z-index: -1;
   top: 0;
@@ -905,6 +906,12 @@ main { position: relative; }
   transform: translateX(-50%);
   background: linear-gradient(110deg, rgba(91, 56, 38, 0.18), rgba(38, 30, 25, 0.32) 50%, rgba(91, 56, 38, 0.12));
   content: "";
+}
+.one-page-music {
+  isolation: isolate;
+}
+.one-page-music::before {
+  background: linear-gradient(110deg, rgba(91, 56, 38, 0.18), rgba(38, 30, 25, 0.32) 50%, rgba(91, 56, 38, 0.12));
 }
 .photo-gallery-inner {
   max-width: none;
@@ -931,6 +938,33 @@ main { position: relative; }
 .photo-carousel::-webkit-scrollbar-track { background: var(--line); }
 .photo-carousel::-webkit-scrollbar-thumb { background: var(--pink-deep); }
 .photo-carousel li { flex: 0 0 auto; }
+.gallery-photo {
+  position: relative;
+  margin-left: clamp(-1.5rem, -2vw, -0.75rem);
+}
+.gallery-photo:first-child { margin-left: 0; }
+.gallery-photo:nth-child(1) { z-index: 1; }
+.gallery-photo:nth-child(2) { z-index: 2; }
+.gallery-photo:nth-child(3) { z-index: 3; }
+.gallery-photo:nth-child(4) { z-index: 4; }
+.gallery-photo:nth-child(5) { z-index: 5; }
+.gallery-photo:nth-child(6) { z-index: 6; }
+.gallery-photo.reveal {
+  opacity: 0;
+  transform: translate3d(1rem, 0.75rem, 0) rotate(1deg) scale(0.98);
+  transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
+}
+.gallery-photo.reveal.in-view {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) rotate(0) scale(1);
+}
+.gallery-photo:nth-child(2).reveal { transition-delay: 70ms; }
+.gallery-photo:nth-child(3).reveal { transition-delay: 140ms; }
+.gallery-photo:nth-child(4).reveal { transition-delay: 210ms; }
+.gallery-photo:nth-child(5).reveal { transition-delay: 280ms; }
+.gallery-photo:nth-child(6).reveal { transition-delay: 350ms; }
+.gallery-photo:hover { z-index: 10; }
+.gallery-photo.reveal.in-view:hover { transform: translate3d(0, -5px, 0) scale(1.02); }
 .photo-carousel img {
   width: auto;
   height: 500px;
@@ -1163,4 +1197,6 @@ body.hero-scroll-enabled .hero-scroll-title {
 
 @media (prefers-reduced-motion: reduce) {
   body.hero-scroll-enabled .hero-scroll-title { will-change: auto; }
+  .gallery-photo.reveal,
+  .gallery-photo.reveal.in-view { opacity: 1; transform: none; transition: none; }
 }
