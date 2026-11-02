@@ -8,16 +8,16 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
   initHeroScroll(prefersReducedMotion);
   initScrollReveal(prefersReducedMotion);
+  initCarouselWheelScroll();
   initSignupForm();
   initFooterYear();
 });
 
-/* ---------- Hero: scroll the name away and deepen the opening image ---------- */
+/* ---------- Hero: scroll the name away ---------- */
 function initHeroScroll(prefersReducedMotion) {
   const hero = document.querySelector('.hero-scroll');
   const title = document.querySelector('.hero-scroll-title');
-  const shade = document.querySelector('.site-backdrop-shade');
-  if (!hero || !title || !shade) return;
+  if (!hero || !title) return;
 
   document.body.classList.toggle('hero-scroll-enabled', !prefersReducedMotion);
   let frameRequested = false;
@@ -27,7 +27,6 @@ function initHeroScroll(prefersReducedMotion) {
       title.style.transform = `translate3d(-50%, ${-progress * 92}vh, 0)`;
       title.style.opacity = String(Math.max(0, 1 - progress * 1.4));
     }
-    shade.style.setProperty('--hero-shade', String(progress * 0.84));
     frameRequested = false;
   };
 
@@ -60,6 +59,30 @@ function initMobileMenu() {
       toggle.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
     });
+  });
+}
+
+/* ---------- Scroll carousels horizontally with a mouse wheel ---------- */
+function initCarouselWheelScroll() {
+  document.querySelectorAll('.release-carousel, .video-carousel, .photo-carousel').forEach((carousel) => {
+    carousel.addEventListener('wheel', (event) => {
+      const wheelDelta = event.deltaX || event.deltaY;
+      if (wheelDelta === 0) return;
+
+      const deltaMultiplier = event.deltaMode === WheelEvent.DOM_DELTA_LINE
+        ? 16
+        : event.deltaMode === WheelEvent.DOM_DELTA_PAGE
+          ? carousel.clientWidth
+          : 1;
+      const scrollDelta = wheelDelta * deltaMultiplier;
+
+      const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+      const nextScrollLeft = Math.max(0, Math.min(maxScroll, carousel.scrollLeft + scrollDelta));
+      if (nextScrollLeft === carousel.scrollLeft) return;
+
+      event.preventDefault();
+      carousel.scrollLeft = nextScrollLeft;
+    }, { passive: false });
   });
 }
 
