@@ -1,63 +1,58 @@
-# SONIQUE — Artist Site
+# SONIQUE — Artist Website
 
-A multi-page site for Sonique: HTML, CSS, and vanilla JS, no build tools required.
+A responsive artist website for SONIQUE, built with HTML, CSS, and vanilla JavaScript.
 
 ## Pages
-- `index.html` — Home: big name + hero photo, about teaser, latest release, tour teaser, gallery, newsletter
-- `bio.html` — Full biography (placeholder text, ready for you to update)
-- `music.html` — All releases with streaming platform links
-- `press.html` — Press kit: general EPK + a downloadable kit per single
-- `events.html` — Tour dates, live from Bandsintown
+- `index.html` — Main single-page site with biography, photo gallery, music, videos, events, socials, and contact
+- `press.html` — Legacy press-kit page; currently excluded from search indexing until its placeholder content is replaced
 
 ## Shared files
 - `styles.css` — all design tokens, layout, and animation (colors/fonts are CSS variables at the top)
-- `script.js` — mobile menu, scroll reveal animation, header scroll state, newsletter form handling
+- `script.js` — mobile menu, carousel wheel scrolling, scroll reveal animation, and footer year
+- `robots.txt` and `sitemap.xml` — search crawler guidance and the canonical homepage URL
 
-## 1. Open it in VS Code
+## Preview locally
 1. Unzip/download the folder.
 2. VS Code → File → Open Folder → select it.
 3. Install the **Live Server** extension.
 4. Right-click `index.html` → "Open with Live Server" to preview with auto-refresh.
 
-## 2. Add real photos
-Every photo spot is currently a gradient placeholder `<div class="photo-placeholder">` inside a sized container (`.hero-photo`, `.bio-photo-frame`, `.release-art`, `.gallery-item`, `.press-card-art`). To swap one in, replace the placeholder div with:
-```html
-<img src="images/your-photo.jpg" alt="Describe the photo">
-```
-The containers already control size/aspect ratio/border-radius, so the image will just fill the space correctly. Create an `images/` folder next to `index.html` for your photo files.
+## Update photos
+Homepage portraits, gallery images, and release artwork are referenced from `images/` in `index.html`. Replace the relevant `src` and write concise, descriptive `alt` text when changing an informative image.
 
-## 3. Connect the Bandsintown widget (events.html)
+## Connect the Bandsintown widget
 The events page already has the real, official Bandsintown embed code:
 ```html
 <script charset="utf-8" src="https://widget.bandsintown.com/main.min.js"></script>
 <a class="bit-widget-initializer" data-artist-name="SONIQUE" ...></a>
 ```
+The widget is embedded in the Events section of `index.html`.
 To make it live:
 1. Go to **bandsintown.com/artists** and claim/create Sonique's artist profile if you haven't already.
 2. Add her tour dates there — the widget pulls from that profile automatically.
 3. In the artist dashboard, open the **Widget** tool. You can either:
-   - Just confirm the `data-artist-name="SONIQUE"` in `events.html` exactly matches her Bandsintown profile name, **or**
+   - Confirm the artist identifier in `index.html` matches her Bandsintown profile, **or**
    - Use her Bandsintown **artist ID** instead (more reliable) — find it in her profile URL, e.g. `bandsintown.com/a/1234567` → use `data-artist-id="1234567"` in place of `data-artist-name`.
-4. The color attributes (`data-text-color`, `data-link-color`, etc.) are already set to match this site's palette — adjust them in the widget dashboard if you want an exact pixel match, then copy your personalized code back into `events.html`.
+4. The color attributes are set to match this site's palette; edit them in `index.html` if needed.
 
-## 4. Add streaming platform links
-Every `.platform-pill` link (in the hero, release cards, and press kit) currently points to `href="#"`. Replace each with the real URL for that platform:
+## Add streaming platform links
+The release and streaming-service links in `index.html` currently use `href="#"`. Replace each with the real smart link or platform URL:
 ```html
 <a href="https://open.spotify.com/artist/..." class="platform-pill">Spotify</a>
 ```
 You can also use a "smart link" service (Linkfire, Feature.fm, or Songwhip are common free/paid options) to generate one link that redirects fans to their preferred platform automatically — just point the `href` at that smart link instead of a specific platform.
 
-## 5. Add press kits
+## Add press kits
 In `press.html`, each `.press-card` has two buttons:
 - **Download Press Kit (PDF)** — link this to a PDF you've prepared per single (bio blurb, credits, contact info).
 - **Download Photos (ZIP)** — link this to a zipped folder of high-res photos for that release.
 
 Upload the actual PDFs/ZIPs to your hosting once the site is live, then point each `href="#"` at the real file path, e.g. `href="press-kits/single-title.pdf"`.
 
-## 6. Add a new single (repeat as needed)
-`music.html` and `press.html` both have a clearly commented **release card template** — duplicate the block, swap in the new title, year, description, cover art, and links.
+## Add a new single
+Duplicate a `.release-item` in `index.html`, then update its title, cover art, alt text, and smart-link URLs.
 
-## 7. Deploy for free
+## Deploy and submit to Google
 **Netlify (easiest):**
 1. netlify.com → sign up free.
 2. Drag the whole project folder onto the Netlify dashboard, or connect a GitHub repo for auto-deploys.
@@ -67,8 +62,10 @@ Upload the actual PDFs/ZIPs to your hosting once the site is live, then point ea
 
 **Alternatives:** Vercel, GitHub Pages, and Cloudflare Pages all work the same way for a static site like this.
 
+The canonical URL and sitemap currently assume the planned domain `https://sonique.co.za/`. If the final domain differs, update the canonical/Open Graph/schema URLs in `index.html`, plus `robots.txt` and `sitemap.xml`, before launch. Once the site is live on HTTPS, verify the domain in Google Search Console and submit `/sitemap.xml`. Search indexing and rankings are not immediate or guaranteed.
+
 ## Notes
-- No dependencies or build step — just five HTML files plus shared CSS/JS.
+- No dependencies or build step — one active homepage plus shared CSS/JS and static assets.
 - Fully responsive down to small mobile screens, with a proper mobile menu.
 - Respects `prefers-reduced-motion` and has visible keyboard focus states throughout.
-- Fonts (Bricolage Grotesque, Inter, IBM Plex Mono) load via Google Fonts CDN links already in each page's `<head>`.
+- Fonts (Bricolage Grotesque, Inter, IBM Plex Mono) load via Google Fonts CDN.

@@ -892,6 +892,7 @@ main { position: relative; }
   position: relative;
   isolation: isolate;
   padding: clamp(2rem, 3vw, 3rem) 0 clamp(1.5rem, 2vw, 2rem) !important;
+  scroll-margin-top: 5rem;
 }
 .photo-gallery::before {
   position: absolute;
@@ -908,6 +909,11 @@ main { position: relative; }
 .photo-gallery-inner {
   max-width: none;
   padding: 0 clamp(1rem, 4vw, 4rem);
+}
+.photo-gallery-heading {
+  margin: 0 auto clamp(2rem, 4vw, 3rem);
+  color: #e6a970;
+  text-align: center;
 }
 .photo-carousel {
   display: flex;
@@ -979,7 +985,6 @@ body.hero-scroll-enabled .hero-scroll-title {
 .one-page-music,
 .one-page-videos,
 .one-page-events,
-.one-page-socials,
 .one-page-contact {
   z-index: 4;
   background: transparent;
@@ -992,7 +997,7 @@ body.hero-scroll-enabled .hero-scroll-title {
   padding-right: clamp(1.5rem, 3vw, 3.5rem);
   padding-left: clamp(1.5rem, 3vw, 3.5rem);
 }
-.site-content-mask > section:not(.photo-gallery) h2 {
+.site-content-mask > section h2 {
   margin-right: auto;
   margin-left: auto;
   text-align: center;
@@ -1022,8 +1027,8 @@ body.hero-scroll-enabled .hero-scroll-title {
 .about-copy p:last-child { margin-bottom: 0; }
 .one-page-music h2,
 .one-page-videos h2,
+.photo-gallery h2,
 .one-page-events h2,
-.one-page-socials h2,
 .one-page-contact h2 { color: #e6a970; }
 .release-item h3,
 .release-title-link,
@@ -1043,18 +1048,20 @@ body.hero-scroll-enabled .hero-scroll-title {
   max-width: 1720px;
   text-align: center;
 }
+.contact-actions {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+}
 .one-page-contact .contact-email {
   display: block;
-  margin-bottom: 1.5rem;
+  margin: 1.5rem 0 clamp(2rem, 4vw, 3rem);
   font-family: var(--font-body);
   font-size: clamp(1.35rem, 3.2vw, 2.2rem);
   line-height: 1.3;
   overflow-wrap: anywhere;
-}
-.one-page-socials .socials-content { max-width: 900px; text-align: center; }
-.one-page-socials h2 {
-  margin-bottom: clamp(2rem, 4vw, 3rem);
-  text-transform: uppercase;
 }
 .socials-icon-groups { display: grid; gap: clamp(1.5rem, 3vw, 2.5rem); }
 .socials-icon-row {
@@ -1079,6 +1086,14 @@ body.hero-scroll-enabled .hero-scroll-title {
   padding: 0.9rem 2.5rem;
   border-radius: 0.5rem;
   font-size: clamp(1.5rem, 3vw, 2.1rem);
+  white-space: normal;
+}
+.epk-button {
+  min-width: min(100%, 22rem);
+  min-height: 4.5rem;
+  padding: 0.9rem 2rem;
+  border-radius: 0.5rem;
+  font-size: clamp(1.15rem, 2.4vw, 1.6rem);
   white-space: normal;
 }
 .site-footer { position: relative; z-index: 4; margin-top: 0; background: rgba(9, 8, 7, 0.78); }
