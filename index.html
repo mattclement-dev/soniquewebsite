@@ -1,10 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-ZA">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SONIQUE | Official Website</title>
-  <meta name="description" content="The official website of SONIQUE — South African singer-songwriter. Discover her story, music, videos, and contact details.">
+  <title>SONIQUE | South African Singer-Songwriter</title>
+  <meta name="description" content="Meet SONIQUE, South African singer-songwriter creating alternative electro-pop. Explore her music, videos, live events, and story.">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#120f0c">
+  <link rel="canonical" href="https://sonique.co.za/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SONIQUE">
+  <meta property="og:title" content="SONIQUE | South African Singer-Songwriter">
+  <meta property="og:description" content="Explore SONIQUE's alternative electro-pop, latest music, videos, live events, and story.">
+  <meta property="og:url" content="https://sonique.co.za/">
+  <meta property="og:image" content="https://sonique.co.za/images/hero-pic.webp">
+  <meta property="og:image:alt" content="South African singer-songwriter SONIQUE">
+  <meta property="og:locale" content="en_ZA">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SONIQUE | South African Singer-Songwriter">
+  <meta name="twitter:description" content="Explore SONIQUE's alternative electro-pop, latest music, videos, live events, and story.">
+  <meta name="twitter:image" content="https://sonique.co.za/images/hero-pic.webp">
+  <meta name="twitter:image:alt" content="South African singer-songwriter SONIQUE">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": "https://sonique.co.za/#artist",
+    "name": "SONIQUE",
+    "url": "https://sonique.co.za/",
+    "image": "https://sonique.co.za/images/hero-pic.webp",
+    "description": "South African singer-songwriter blending alternative electro-pop, powerful vocals, and honest storytelling.",
+    "jobTitle": "Singer-songwriter",
+    "nationality": {
+      "@type": "Country",
+      "name": "South Africa"
+    },
+    "sameAs": [
+      "https://www.instagram.com/soniquepitout/",
+      "https://www.facebook.com/sonique.p2/",
+      "https://www.tiktok.com/@soniquepitout",
+      "https://www.youtube.com/@soniquepitout"
+    ]
+  }
+  </script>
 
   <link rel="icon" type="image/jpeg" href="images/favicon.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +56,7 @@
   <a class="skip-link" href="#main">Skip to content</a>
 
   <div class="site-portrait" aria-hidden="true">
-    <img src="images/soniquehero.png" alt="">
+    <img src="images/soniquehero.png" alt="" fetchpriority="high" decoding="async">
   </div>
   <div class="site-backdrop-shade" aria-hidden="true"></div>
 
@@ -27,8 +67,8 @@
           <li><a href="#about" class="nav-link">About</a></li>
           <li><a href="#music" class="nav-link">Music</a></li>
           <li><a href="#videos" class="nav-link">Videos</a></li>
+          <li><a href="#gallery" class="nav-link">Gallery</a></li>
           <li><a href="#events" class="nav-link">Events</a></li>
-          <li><a href="#socials" class="nav-link">Socials</a></li>
           <li><a href="#contact" class="nav-link">Contact</a></li>
         </ul>
       </nav>
@@ -58,19 +98,6 @@
             <p>Alongside national and international media exposure and a growing live performance presence, SONIQUE remains passionate about creating music that inspires connection, healing and hope. Her powerful vocals, magnetic performances and emotionally honest songwriting leave a lasting impact long after the final note.</p>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section class="photo-gallery" aria-label="SONIQUE photo gallery">
-      <div class="photo-gallery-inner">
-        <ul class="photo-carousel" aria-label="SONIQUE photos" tabindex="0">
-          <li><img src="images/presspic-1.webp" alt="SONIQUE portrait" loading="lazy"></li>
-          <li><img src="images/presspic-8.webp" alt="SONIQUE performing on stage" loading="lazy"></li>
-          <li><img src="images/presspic-3.webp" alt="SONIQUE portrait" loading="lazy"></li>
-          <li><img src="images/presspic-4.webp" alt="SONIQUE portrait" loading="lazy"></li>
-          <li><img src="images/presspic-6.webp" alt="SONIQUE portrait" loading="lazy"></li>
-          <li><img src="images/presspic-7.webp" alt="SONIQUE portrait" loading="lazy"></li>
-        </ul>
       </div>
     </section>
 
@@ -174,6 +201,20 @@
       </div>
     </section>
 
+    <section class="photo-gallery" id="gallery" aria-label="SONIQUE photo gallery">
+      <h2 class="photo-gallery-heading">GALLERY</h2>
+      <div class="photo-gallery-inner">
+        <ul class="photo-carousel" aria-label="SONIQUE photos" tabindex="0">
+          <li><img src="images/presspic-1.webp" alt="SONIQUE portrait" loading="lazy"></li>
+          <li><img src="images/presspic-8.webp" alt="SONIQUE performing on stage" loading="lazy"></li>
+          <li><img src="images/presspic-3.webp" alt="SONIQUE portrait" loading="lazy"></li>
+          <li><img src="images/presspic-4.webp" alt="SONIQUE portrait" loading="lazy"></li>
+          <li><img src="images/presspic-6.webp" alt="SONIQUE portrait" loading="lazy"></li>
+          <li><img src="images/presspic-7.webp" alt="SONIQUE portrait" loading="lazy"></li>
+        </ul>
+      </div>
+    </section>
+
     <section class="one-page-events" id="events">
       <div class="section-inner">
         <h2>Events</h2>
@@ -207,9 +248,14 @@
       </div>
     </section>
 
-    <section class="one-page-socials" id="socials">
-      <div class="section-inner socials-content">
-        <h2>Socials</h2>
+    <section class="one-page-contact" id="contact">
+      <div class="section-inner contact-content">
+        <h2>Contact</h2>
+        <div class="contact-actions">
+          <a class="btn btn-primary contact-button" href="mailto:manager@sonique.co.za">Contact</a>
+          <a class="btn btn-outline epk-button" href="documents/Sonique-EPK-Aug-2026.pdf" download>Download EPK</a>
+        </div>
+        <a class="contact-email" href="mailto:manager@sonique.co.za">manager@sonique.co.za</a>
         <div class="socials-icon-groups">
           <ul class="socials-icon-row" aria-label="Follow SONIQUE">
             <li><a href="https://www.instagram.com/soniquepitout/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="images/instagram-white.png" alt=""></a></li>
@@ -224,13 +270,6 @@
             <li><a href="#" aria-label="Amazon Music"><img src="images/amazon-white.png" alt=""></a></li>
           </ul>
         </div>
-      </div>
-    </section>
-
-    <section class="one-page-contact" id="contact">
-      <div class="section-inner contact-content">
-        <a class="contact-email" href="mailto:manager@sonique.co.za">manager@sonique.co.za</a>
-        <a class="btn btn-primary contact-button" href="mailto:manager@sonique.co.za">Contact</a>
       </div>
     </section>
     </div>
