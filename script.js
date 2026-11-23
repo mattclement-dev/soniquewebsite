@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeroScroll(prefersReducedMotion);
   initScrollReveal(prefersReducedMotion);
   initCarouselWheelScroll();
+  initCarouselMouseDrag(prefersReducedMotion);
   initCarouselArrows(prefersReducedMotion);
   initSongTextFit();
   initSectionSnap(prefersReducedMotion);
@@ -86,6 +87,84 @@ function initCarouselWheelScroll() {
       event.preventDefault();
       carousel.scrollLeft = nextScrollLeft;
     }, { passive: false });
+  });
+}
+
+/* ---------- Drag carousels with the mouse (left button) ----------
+   Touch already swipes natively; this gives mouse users the same feel.
+   A short drag still counts as a click on a cover/video; a real drag
+   swallows that click so you don't accidentally open a link. */
+function initCarouselMouseDrag(prefersReducedMotion) {
+  const DRAG_THRESHOLD = 6; // px of movement before it counts as a drag
+
+  document.querySelectorAll('.release-carousel, .video-carousel').forEach((carousel) => {
+    let pointerId = null;
+    let startX = 0;
+    let startScroll = 0;
+    let dragging = false;
+    let lastX = 0;
+    let lastTime = 0;
+    let velocity = 0; // px per ms
+
+    // Stop the browser's native image/link drag ghost.
+    carousel.addEventListener('dragstart', (event) => event.preventDefault());
+
+    carousel.addEventListener('pointerdown', (event) => {
+      if (event.pointerType !== 'mouse' || event.button !== 0) return;
+      pointerId = event.pointerId;
+      startX = lastX = event.clientX;
+      startScroll = carousel.scrollLeft;
+      lastTime = performance.now();
+      velocity = 0;
+      dragging = false;
+    });
+
+    carousel.addEventListener('pointermove', (event) => {
+      if (event.pointerId !== pointerId) return;
+      const dx = event.clientX - startX;
+
+      if (!dragging) {
+        if (Math.abs(dx) < DRAG_THRESHOLD) return;
+        dragging = true;
+        carousel.classList.add('is-dragging');
+        carousel.setPointerCapture(pointerId);
+      }
+
+      const now = performance.now();
+      const dt = Math.max(1, now - lastTime);
+      velocity = (event.clientX - lastX) / dt;
+      lastX = event.clientX;
+      lastTime = now;
+
+      carousel.scrollLeft = startScroll - dx;
+    });
+
+    const endDrag = (event) => {
+      if (event.pointerId !== pointerId) return;
+      pointerId = null;
+      if (!dragging) return;
+
+      carousel.classList.remove('is-dragging');
+      if (carousel.hasPointerCapture(event.pointerId)) carousel.releasePointerCapture(event.pointerId);
+
+      // Swallow the click that follows a drag so links don't open.
+      const blockClick = (clickEvent) => {
+        clickEvent.preventDefault();
+        clickEvent.stopPropagation();
+      };
+      carousel.addEventListener('click', blockClick, { capture: true, once: true });
+      setTimeout(() => carousel.removeEventListener('click', blockClick, { capture: true }), 0);
+
+      // A little momentum so a flick keeps gliding.
+      const glide = -velocity * 250;
+      if (!prefersReducedMotion && Math.abs(glide) > 20) {
+        carousel.scrollBy({ left: glide, behavior: 'smooth' });
+      }
+      dragging = false;
+    };
+
+    carousel.addEventListener('pointerup', endDrag);
+    carousel.addEventListener('pointercancel', endDrag);
   });
 }
 

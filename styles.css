@@ -474,6 +474,24 @@ section.page-hero {
   font-size: clamp(1rem, 1.8vw, 1.2rem);
 }
 
+/* Mouse drag-to-scroll (see initCarouselMouseDrag in script.js) */
+@media (hover: hover) and (pointer: fine) {
+  .release-carousel,
+  .video-carousel { cursor: grab; }
+}
+.release-carousel.is-dragging,
+.video-carousel.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.release-carousel.is-dragging *,
+.video-carousel.is-dragging * { cursor: grabbing; }
+.release-carousel img,
+.video-carousel img { -webkit-user-drag: none; user-select: none; }
+
 /* Swipe hint arrows — mobile/tablet only (see max-width: 860px below) */
 .carousel-frame { position: relative; }
 .carousel-arrow { display: none; }
