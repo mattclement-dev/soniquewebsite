@@ -474,6 +474,10 @@ section.page-hero {
   font-size: clamp(1rem, 1.8vw, 1.2rem);
 }
 
+/* Swipe hint arrows — mobile/tablet only (see max-width: 860px below) */
+.carousel-frame { position: relative; }
+.carousel-arrow { display: none; }
+
 .music-videos-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1156,6 +1160,9 @@ body.hero-scroll-enabled .hero-scroll-title {
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
 }
 .about-copy p {
+  text-align: justify;
+  -webkit-hyphens: auto;
+  hyphens: auto;
   color: #d8b792;
   font-size: 1rem;
   line-height: 1.5;
@@ -1236,6 +1243,141 @@ body.hero-scroll-enabled .hero-scroll-title {
 .site-footer { position: relative; z-index: 4; margin-top: 0; background: rgba(9, 8, 7, 0.78); }
 .footer-brand { color: var(--ink); }
 
+/* ==========================================================================
+   SONG RELEASE PAGES (e.g. /friends/)
+   ========================================================================== */
+/* Header scrolls away with the page so the logo never sits over the text;
+   the menu toggle is fixed on its own and stays available. */
+.song-page .site-header { position: absolute; }
+.song-page .header-inner { justify-content: flex-start; }
+
+.song-release { padding: clamp(5rem, 8vw, 5.5rem) 0 var(--section-space); }
+.song-release .section-inner { max-width: 1120px; }
+
+.song-listen { display: flex; justify-content: center; margin-bottom: clamp(2rem, 4vw, 3rem); }
+/* Cream fill + dark text: matches the cream headings (--ink) so it reads
+   clearly against the dark background; warms to amber on hover. */
+.song-listen-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-width: min(100%, 17rem);
+  padding: 0.95rem 2.5rem;
+  border: 1px solid rgba(255, 250, 243, 0.6);
+  border-radius: 0.5rem;
+  background: var(--ink);
+  box-shadow:
+    0 8px 28px rgba(245, 232, 217, 0.14),
+    0 4px 14px rgba(0, 0, 0, 0.45);
+  color: #17110b;
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+/* Small play triangle before the label */
+.song-listen-button::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-top: 0.42em solid transparent;
+  border-bottom: 0.42em solid transparent;
+  border-left: 0.68em solid currentColor;
+}
+.song-listen-button:hover {
+  transform: translateY(-2px);
+  border-color: rgba(240, 180, 122, 0.8);
+  background: #e6a970;
+  box-shadow:
+    0 12px 38px rgba(224, 152, 90, 0.38),
+    0 6px 18px rgba(0, 0, 0, 0.5);
+}
+.song-listen-button:active { transform: translateY(0); }
+.song-listen-button:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+
+.song-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "title"
+    "cover"
+    "body"
+    "closing";
+  gap: clamp(1.5rem, 4vw, 2rem);
+}
+.song-title {
+  grid-area: title;
+  color: var(--ink);
+  font-size: clamp(2.75rem, 7vw, 4.25rem);
+  letter-spacing: 0.02em;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+}
+.song-cover { grid-area: cover; max-width: 420px; width: 100%; margin: 0 auto; }
+.song-cover img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45);
+}
+/* Spacing inside the text uses em so it scales with the fitted font size
+   (see initSongTextFit in script.js). */
+.song-body { grid-area: body; font-size: clamp(0.98rem, 1.2vw, 1.05rem); }
+.song-body p { margin: 0 0 1em; color: var(--ink); font-size: 1em; line-height: 1.65; }
+.song-body > :last-child { margin-bottom: 0; }
+.song-body > p,
+.song-quote p {
+  text-align: justify;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+.song-body strong { font-weight: 600; }
+
+/* SONIQUE's quotes, set off as in the press release */
+.song-quote {
+  margin: 1.5em 0;
+  padding: 0.1em 0 0.1em 1.4em;
+  border-left: 3px solid rgba(230, 169, 112, 0.6);
+}
+.song-quote p { margin: 0; }
+.song-quote em { color: #ead2b6; }
+
+.song-closing {
+  grid-area: closing;
+  max-width: 46rem;
+  margin: clamp(0.5rem, 2vw, 1.5rem) auto 0;
+  color: var(--ink);
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  font-weight: 600;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* Side by side: cover and text get near-equal width, and the script sizes
+   the text so its top and bottom line up with the cover's. Keep this
+   breakpoint in sync with SONG_SIDE_BY_SIDE in script.js. */
+@media (min-width: 1024px) {
+  .song-release .section-inner,
+  .song-page .header-inner { max-width: 1400px; }
+  .song-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    grid-template-areas:
+      ".       title"
+      "cover   body"
+      "closing closing";
+    column-gap: clamp(2rem, 3vw, 3rem);
+    row-gap: 1.75rem;
+    align-items: start;
+  }
+  .song-cover { max-width: none; }
+  .song-page .logo { font-size: clamp(1.8rem, 2.2vw, 2.4rem); line-height: 1.2; }
+}
+
 @media (min-width: 861px) {
   .main-nav ul { position: relative; top: -64px; }
   .release-carousel .release-item { flex: 0 0 440px; }
@@ -1275,6 +1417,66 @@ body.hero-scroll-enabled .hero-scroll-title {
   .main-nav.open { transform: translateX(0); }
   .main-nav ul { align-items: center; gap: 1.75rem; }
   .nav-link { font-size: clamp(1.75rem, 8vw, 2.4rem); }
+
+  /* Carousels snap so a cover / video always comes to rest in the centre.
+     Side padding of (half the carousel − half an item) lets the first and
+     last items centre too. Widths use vw so a whole video fits on screen. */
+  .release-carousel { --carousel-item: min(72vw, 320px); }
+  .video-carousel { --carousel-item: min(calc(100vw - 5rem), 560px); }
+  .release-carousel,
+  .video-carousel {
+    scroll-snap-type: x mandatory;
+    padding-left: calc(50% - var(--carousel-item) / 2);
+    padding-right: calc(50% - var(--carousel-item) / 2);
+    -webkit-overflow-scrolling: touch;
+  }
+  .release-carousel .release-item,
+  .video-carousel .video-carousel-item {
+    flex: 0 0 var(--carousel-item);
+    scroll-snap-align: center;
+  }
+
+  .carousel-arrow {
+    position: absolute;
+    z-index: 3;
+    /* centre on the artwork, ignoring the title + scrollbar below it */
+    top: calc(50% - 1.6rem);
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border: 1px solid rgba(230, 169, 112, 0.35);
+    border-radius: 50%;
+    background: rgba(18, 16, 13, 0.45);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    color: #e6a970;
+    opacity: 0.75;
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: opacity 0.3s var(--ease), visibility 0s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .carousel-arrow::before {
+    content: "";
+    width: 0.5rem;
+    height: 0.5rem;
+    border-top: 1.5px solid currentColor;
+    border-right: 1.5px solid currentColor;
+  }
+  .carousel-arrow-prev { left: 0.4rem; }
+  .carousel-arrow-next { right: 0.4rem; }
+  .carousel-arrow-prev::before { transform: translateX(15%) rotate(-135deg); }
+  .carousel-arrow-next::before { transform: translateX(-15%) rotate(45deg); }
+  .carousel-arrow[hidden] {
+    display: grid;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s var(--ease), visibility 0s 0.3s;
+  }
+  .carousel-arrow:active { opacity: 1; }
 }
 
 @media (max-width: 520px) {

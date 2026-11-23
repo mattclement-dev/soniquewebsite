@@ -3,7 +3,7 @@
 A responsive artist website for SONIQUE, built with HTML, CSS, and vanilla JavaScript.
 
 ## Pages
-- `index.html` — Main single-page site with biography, photo gallery, music, videos, events, socials, and contact
+- `index.html` — Main single-page site with biography, music, videos, events, socials, and contact
 - `press.html` — Legacy press-kit page; currently excluded from search indexing until its placeholder content is replaced
 
 ## Shared files

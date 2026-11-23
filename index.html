@@ -67,7 +67,6 @@
           <li><a href="#about" class="nav-link">About</a></li>
           <li><a href="#music" class="nav-link">Music</a></li>
           <li><a href="#videos" class="nav-link">Videos</a></li>
-          <li><a href="#gallery" class="nav-link">Gallery</a></li>
           <li><a href="#events" class="nav-link">Events</a></li>
           <li><a href="#contact" class="nav-link">Contact</a></li>
         </ul>
@@ -104,12 +103,15 @@
     <section class="one-page-music" id="music">
       <div class="section-inner">
         <h2>Music</h2>
+        <div class="carousel-frame">
+        <button class="carousel-arrow carousel-arrow-prev" type="button" aria-label="Previous releases" hidden></button>
+        <button class="carousel-arrow carousel-arrow-next" type="button" aria-label="More releases" hidden></button>
         <ul class="release-carousel" aria-label="SONIQUE releases" tabindex="0">
           <li class="release-item">
-            <a class="release-cover-link" href="#" aria-label="Listen to Friends">
+            <a class="release-cover-link" href="/friends/" aria-label="Friends — read more and listen">
               <img src="images/cover-friends.webp" alt="Friends single cover" loading="lazy">
             </a>
-            <h3><a class="release-title-link" href="#">Friends</a></h3>
+            <h3><a class="release-title-link" href="/friends/">Friends</a></h3>
           </li>
           <li class="release-item">
             <a class="release-cover-link" href="#" aria-label="Listen to Black &amp; White">
@@ -154,12 +156,16 @@
             <h3><a class="release-title-link" href="#">Together We Are Stronger</a></h3>
           </li>
         </ul>
+        </div>
       </div>
     </section>
 
     <section class="one-page-videos" id="videos">
       <div class="section-inner">
         <h2>Videos</h2>
+        <div class="carousel-frame">
+        <button class="carousel-arrow carousel-arrow-prev" type="button" aria-label="Previous videos" hidden></button>
+        <button class="carousel-arrow carousel-arrow-next" type="button" aria-label="More videos" hidden></button>
         <ul class="video-carousel" aria-label="SONIQUE videos" tabindex="0">
           <li class="video-carousel-item">
             <a class="video-thumbnail-link" href="https://www.youtube.com/watch?v=r1O-GlXFh9s" target="_blank" rel="noopener noreferrer" aria-label="Watch Friends on YouTube">
@@ -198,20 +204,7 @@
             <h3>Together We Are Stronger</h3>
           </li>
         </ul>
-      </div>
-    </section>
-
-    <section class="photo-gallery" id="gallery" aria-label="SONIQUE photo gallery">
-      <h2 class="photo-gallery-heading">GALLERY</h2>
-      <div class="photo-gallery-inner">
-        <ul class="photo-carousel" aria-label="SONIQUE photos" tabindex="0">
-          <li class="gallery-photo reveal"><img src="images/presspic-1.webp" alt="SONIQUE portrait" loading="lazy"></li>
-          <li class="gallery-photo reveal"><img src="images/presspic-8.webp" alt="SONIQUE performing on stage" loading="lazy"></li>
-          <li class="gallery-photo reveal"><img src="images/presspic-3.webp" alt="SONIQUE portrait" loading="lazy"></li>
-          <li class="gallery-photo reveal"><img src="images/presspic-4.webp" alt="SONIQUE portrait" loading="lazy"></li>
-          <li class="gallery-photo reveal"><img src="images/presspic-6.webp" alt="SONIQUE portrait" loading="lazy"></li>
-          <li class="gallery-photo reveal"><img src="images/presspic-7.webp" alt="SONIQUE portrait" loading="lazy"></li>
-        </ul>
+        </div>
       </div>
     </section>
 
