@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCarouselMouseDrag(prefersReducedMotion);
   initCarouselArrows(prefersReducedMotion);
   initSongTextFit();
+  initAboutTextFit();
   initSectionSnap(prefersReducedMotion);
   initSignupForm();
   initFooterYear();
@@ -199,38 +200,38 @@ function initCarouselArrows(prefersReducedMotion) {
   });
 }
 
-/* ---------- Song pages: line the text up with the cover art ----------
-   When the cover and text sit side by side, find the font size (within a
-   readable range) at which the text block is exactly as tall as the square
-   cover, so their tops and bottoms line up. Stacked layouts use the CSS size. */
-const SONG_SIDE_BY_SIDE = '(min-width: 1024px)';
-const SONG_FONT_MIN = 13;  // px — never shrink text below this
-const SONG_FONT_MAX = 19;  // px
-
-function initSongTextFit() {
-  const cover = document.querySelector('.song-cover');
-  const body = document.querySelector('.song-body');
-  if (!cover || !body) return;
-
-  const sideBySide = window.matchMedia(SONG_SIDE_BY_SIDE);
+/* ---------- Line text blocks up with the image beside them ----------
+   When text sits next to an image (song cover, About photo), find the font
+   size, within a readable range, at which the text block is exactly as tall
+   as the image, so their tops and bottoms line up. Spacing inside the text
+   uses em, so it scales with the size. Outside the given layout the CSS
+   size is used. */
+function fitTextToImage({ text, image, media, minPx, maxPx }) {
+  if (!text || !image) return;
+  const layout = window.matchMedia(media);
 
   const fit = () => {
-    body.style.fontSize = '';
-    if (!sideBySide.matches) return;
+    text.style.fontSize = '';
+    if (!layout.matches) return;
 
-    const target = cover.offsetHeight;
+    const target = image.offsetHeight;
     if (!target) return;
 
+    // Measure the text at its natural height, even if the grid stretches it.
+    const previousAlign = text.style.alignSelf;
+    text.style.alignSelf = 'start';
+
     // Text height grows with font size, so binary-search the size.
-    let lo = SONG_FONT_MIN;
-    let hi = SONG_FONT_MAX;
+    let lo = minPx;
+    let hi = maxPx;
     for (let i = 0; i < 14; i++) {
       const mid = (lo + hi) / 2;
-      body.style.fontSize = `${mid}px`;
-      if (body.offsetHeight > target) hi = mid;
+      text.style.fontSize = `${mid}px`;
+      if (text.offsetHeight > target) hi = mid;
       else lo = mid;
     }
-    body.style.fontSize = `${lo}px`;
+    text.style.fontSize = `${lo}px`;
+    text.style.alignSelf = previousAlign;
   };
 
   let frame = 0;
@@ -243,103 +244,282 @@ function initSongTextFit() {
   window.addEventListener('resize', scheduleFit, { passive: true });
   window.addEventListener('load', scheduleFit);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(scheduleFit);
-  const img = cover.querySelector('img');
+  const img = image.tagName === 'IMG' ? image : image.querySelector('img');
   if (img && !img.complete) img.addEventListener('load', scheduleFit);
 }
 
-/* ---------- Settle on the nearest section when scrolling stops ----------
-   Sections that fit on screen are centred in the area below the fixed
-   header. Sections taller than the screen can be scrolled through freely;
-   they only snap to their top or bottom edge when one is partly in view. */
+// Song pages: text beside the square cover (side-by-side from 1024px).
+// Keep the breakpoint in sync with the song-page media query in styles.css.
+function initSongTextFit() {
+  fitTextToImage({
+    text: document.querySelector('.song-body'),
+    image: document.querySelector('.song-cover'),
+    media: '(min-width: 1024px)',
+    minPx: 13,
+    maxPx: 19,
+  });
+}
+
+// Homepage About: bio beside the photo (side-by-side from 861px).
+function initAboutTextFit() {
+  fitTextToImage({
+    text: document.querySelector('.home-page .about-copy'),
+    image: document.querySelector('.home-page .bio-photo-frame'),
+    media: '(min-width: 861px)',
+    minPx: 14,
+    maxPx: 22,
+  });
+}
+
+/* ---------- Page-by-page section scrolling (homepage) ----------
+   Each wheel notch / trackpad gesture / swipe / Page key moves exactly one
+   section, with a smooth glide and a short pause on arrival so continuous
+   scrolling steps through calmly instead of racing. Sections that fit on
+   screen are centred below the fixed header. Sections taller than the screen
+   (e.g. About, Contact + footer) scroll normally inside; the next scroll past
+   their top or bottom edge steps to the neighbouring section. */
 function initSectionSnap(prefersReducedMotion) {
   const contentMask = document.querySelector('.site-content-mask');
   if (!contentMask || prefersReducedMotion) return;
 
   const sections = Array.from(document.querySelectorAll('#main > section, .site-content-mask > section'));
-  const header = document.getElementById('site-header');
+  if (!sections.length) return;
   const nav = document.getElementById('main-nav');
-  // The footer is framed together with the last section (Contact), so
-  // settling there shows the copyright line instead of snapping above it.
+  // The footer is framed together with the last section (Contact), so the
+  // copyright line is shown there instead of being snapped away.
   const footer = document.querySelector('.site-footer');
   const lastSection = sections[sections.length - 1];
-  if (!sections.length) return;
 
-  const SETTLE_DELAY = 160;
-  const MIN_DISTANCE = 4;
-  let settleTimer = null;
-  let pointerDown = false;
-  let scrolledWhileDown = false;
+  const GLIDE_MIN = 480;      // ms — shortest page-to-page glide
+  const GLIDE_MAX = 720;      // ms — longest
+  const PAUSE = 150;          // ms — break after arriving before the next step
+  const SWIPE_MIN = 40;       // px a finger must travel to change page
+  const FIT_TOLERANCE = 1.15; // up to 15% taller than the screen still "fits"
+  const SETTLE_DELAY = 160;   // ms of stillness before tidying a native scroll
+  const MIN_MOVE = 10;        // px
+  const MIN_DISTANCE = 4;     // px
 
-  // Returns the scroll position that frames this section, or null when the
-  // section is taller than the screen and already fills it (free reading).
-  const snapTargetFor = (section, scrollY, headerHeight, viewHeight) => {
-    const rect = section.getBoundingClientRect();
-    const endRect = section === lastSection && footer ? footer.getBoundingClientRect() : rect;
-    const top = rect.top + scrollY;
-    const bottom = endRect.bottom + scrollY;
-    const height = bottom - top;
-    const visibleHeight = viewHeight - headerHeight;
+  let animating = false;
+  let pauseUntil = 0;
+  let settledAt = window.scrollY;
+  let jumpedByLink = false;
+  let lastWheelTime = 0;
+  let lastWheelSize = 0;
 
-    if (height <= visibleHeight) {
-      return top - headerHeight - (visibleHeight - height) / 2;
-    }
+  const isLocked = () => animating || performance.now() < pauseUntil;
+  const navOpen = () => nav && nav.classList.contains('open');
 
-    const fillsScreen = top <= scrollY + headerHeight && bottom >= scrollY + viewHeight;
-    if (fillsScreen) return null;
-
-    const alignTop = top - headerHeight;
-    const alignBottom = bottom - viewHeight;
-    return Math.abs(alignTop - scrollY) < Math.abs(alignBottom - scrollY) ? alignTop : alignBottom;
-  };
-
-  const settle = () => {
-    if (pointerDown || (nav && nav.classList.contains('open'))) return;
-
+  /* ---- Geometry ---- */
+  // Rest positions per section: short ones have a single centred stop;
+  // tall ones a start (top edge) and end (bottom edge) with free reading between.
+  const getStops = () => {
     const scrollY = window.scrollY;
     const viewHeight = window.innerHeight;
-    const headerHeight = header ? header.offsetHeight : 0;
+    // The homepage header is a transparent overlay (just the menu button),
+    // so sections are framed against the full window.
+    const headerHeight = 0;
+    const visibleHeight = viewHeight - headerHeight;
     const maxScroll = document.documentElement.scrollHeight - viewHeight;
+    const clamp = (y) => Math.max(0, Math.min(maxScroll, y));
 
-    let bestTarget = null;
-    let bestDistance = Infinity;
-    for (const section of sections) {
-      const target = snapTargetFor(section, scrollY, headerHeight, viewHeight);
-      if (target === null) return; // reading inside a tall section — leave it alone
-      const clamped = Math.max(0, Math.min(maxScroll, target));
-      const distance = Math.abs(clamped - scrollY);
-      if (distance < bestDistance) {
-        bestDistance = distance;
-        bestTarget = clamped;
+    return sections.map((section) => {
+      const rect = section.getBoundingClientRect();
+      const endRect = section === lastSection && footer ? footer.getBoundingClientRect() : rect;
+      const top = rect.top + scrollY;
+      const bottom = endRect.bottom + scrollY;
+      const height = bottom - top;
+
+      // Sections only slightly taller than the screen (mostly padding) are
+      // treated as fitting, so they don't need an extra scroll to get past.
+      if (height <= visibleHeight * FIT_TOLERANCE) {
+        const centre = clamp(top - headerHeight - (visibleHeight - height) / 2);
+        return { start: centre, end: centre };
       }
-    }
+      return { start: clamp(top - headerHeight), end: clamp(bottom - viewHeight) };
+    });
+  };
+  const pointsOf = (stops) => stops.flatMap((s) => (s.start === s.end ? [s.start] : [s.start, s.end]));
 
-    if (bestTarget === null || bestDistance < MIN_DISTANCE) return;
-    window.scrollTo({ top: bestTarget, behavior: 'smooth' });
+  // How far the page may scroll natively in this direction before reaching
+  // the edge of the tall section it's in (0 = not in a tall section / at edge).
+  const roomInTallSection = (dir) => {
+    const y = window.scrollY;
+    for (const s of getStops()) {
+      if (s.start === s.end || y < s.start - 1 || y > s.end + 1) continue;
+      return dir > 0 ? Math.max(0, s.end - y) : Math.max(0, y - s.start);
+    }
+    return 0;
   };
 
-  const scheduleSettle = () => {
+  /* ---- Moving ---- */
+  const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+  const glideTo = (target) => {
+    const from = window.scrollY;
+    const distance = target - from;
+    settledAt = target;
+    if (Math.abs(distance) < MIN_DISTANCE) return;
+
+    const duration = Math.min(GLIDE_MAX, Math.max(GLIDE_MIN, 360 + Math.abs(distance) * 0.2));
+    const startTime = performance.now();
+    animating = true;
+
+    const frame = (now) => {
+      const t = Math.min(1, (now - startTime) / duration);
+      window.scrollTo({ top: from + distance * easeInOutCubic(t), behavior: 'instant' });
+      if (t < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        animating = false;
+        pauseUntil = performance.now() + PAUSE;
+      }
+    };
+    requestAnimationFrame(frame);
+  };
+
+  // Move one section in the given direction (1 = down, -1 = up).
+  const step = (dir) => {
+    const y = window.scrollY;
+    const ahead = pointsOf(getStops()).filter((p) => (dir > 0 ? p > y + 2 : p < y - 2));
+    if (!ahead.length) return;
+    const target = ahead.reduce((a, b) => (Math.abs(a - y) < Math.abs(b - y) ? a : b));
+    glideTo(target);
+  };
+
+  // Either let the browser scroll (inside a tall section) or step a page.
+  // Returns true when we handled it and the native scroll must be cancelled.
+  const handleIntent = (dir, nativeDistance) => {
+    const room = roomInTallSection(dir);
+    if (room > 1) {
+      if (nativeDistance <= room) return false; // keep reading normally
+      // This scroll would overshoot the section edge: stop exactly on it.
+      glideTo(window.scrollY + dir * room);
+      return true;
+    }
+    step(dir);
+    return true;
+  };
+
+  /* ---- Mouse wheel / trackpad ---- */
+  window.addEventListener('wheel', (event) => {
+    if (event.defaultPrevented || event.ctrlKey || navOpen()) return; // carousel scroll, pinch-zoom, menu
+    if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;      // sideways trackpad gesture
+
+    const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
+    const size = Math.abs(event.deltaY * unit);
+    const now = performance.now();
+    const gap = now - lastWheelTime;
+    const previousSize = lastWheelSize;
+    lastWheelTime = now;
+    lastWheelSize = size;
+    if (size < 1) return;
+
+    if (isLocked()) { event.preventDefault(); return; }
+
+    // Trackpad momentum: a stream of shrinking deltas right after a step.
+    // Ignore it so one flick = one page. (A mouse wheel repeats equal deltas,
+    // so continuous wheel scrolling still advances after the pause.)
+    if (gap < 120 && size < previousSize) { event.preventDefault(); return; }
+
+    if (handleIntent(Math.sign(event.deltaY), size)) event.preventDefault();
+  }, { passive: false });
+
+  /* ---- Keyboard ---- */
+  window.addEventListener('keydown', (event) => {
+    if (event.altKey || event.ctrlKey || event.metaKey || navOpen()) return;
+    const el = event.target;
+    if (el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName))) return;
+
+    const keys = { ArrowDown: 1, PageDown: 1, ArrowUp: -1, PageUp: -1, ' ': event.shiftKey ? -1 : 1 };
+    const dir = keys[event.key];
+    if (!dir) return;
+    if (isLocked()) { event.preventDefault(); return; }
+
+    const distance = event.key.startsWith('Arrow') ? 40 : window.innerHeight * 0.85;
+    if (handleIntent(dir, distance)) event.preventDefault();
+  });
+
+  /* ---- Touch ---- */
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchMode = null; // null (undecided) | 'native' | 'page' | 'ignore'
+  let touchDir = 0;
+
+  window.addEventListener('touchstart', (event) => {
+    if (event.touches.length !== 1 || navOpen()) { touchMode = 'ignore'; return; }
+    touchStartX = event.touches[0].clientX;
+    touchStartY = event.touches[0].clientY;
+    touchMode = null;
+  }, { passive: true });
+
+  window.addEventListener('touchmove', (event) => {
+    if (touchMode === 'ignore' || touchMode === 'native') return;
+    if (touchMode === 'page') { event.preventDefault(); return; }
+
+    const dx = event.touches[0].clientX - touchStartX;
+    const dy = event.touches[0].clientY - touchStartY;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < 8) return;
+
+    if (Math.abs(dx) > Math.abs(dy)) { touchMode = 'ignore'; return; } // carousel swipe
+    touchDir = dy < 0 ? 1 : -1; // finger up = scroll down
+
+    if (isLocked() || roomInTallSection(touchDir) <= 1) {
+      touchMode = 'page';
+      event.preventDefault();
+    } else {
+      touchMode = 'native'; // reading inside a tall section
+    }
+  }, { passive: false });
+
+  window.addEventListener('touchend', (event) => {
+    if (touchMode === 'page' && !isLocked()) {
+      const dy = event.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(dy) >= SWIPE_MIN) step(touchDir);
+    }
+    if (touchMode === 'native') scheduleSettle();
+    touchMode = null;
+  }, { passive: true });
+
+  /* ---- Tidy up after native scrolling ----
+     Scrollbar drags, Home/End, in-page links and native scrolling inside tall
+     sections can leave the page between sections; once it's still, carry on
+     to the next section in the direction travelled (or the nearest one after
+     a link jump). */
+  let settleTimer = null;
+  let mouseDown = false;
+
+  document.addEventListener('click', (event) => {
+    if (event.target.closest && event.target.closest('a[href^="#"]')) jumpedByLink = true;
+  });
+
+  const settle = () => {
+    if (animating || mouseDown || touchMode === 'native' || navOpen()) return;
+
+    const y = window.scrollY;
+    const stops = getStops();
+    if (stops.some((s) => y > s.start + 1 && y < s.end - 1)) { settledAt = y; return; }
+
+    const points = pointsOf(stops);
+    const moved = y - settledAt;
+    let target = null;
+    if (Math.abs(moved) >= MIN_MOVE && !jumpedByLink) {
+      const ahead = points.filter((p) => (moved > 0 ? p >= y - 1 : p <= y + 1));
+      if (ahead.length) target = ahead.reduce((a, b) => (Math.abs(a - y) < Math.abs(b - y) ? a : b));
+    }
+    if (target === null) target = points.reduce((a, b) => (Math.abs(a - y) < Math.abs(b - y) ? a : b));
+
+    jumpedByLink = false;
+    glideTo(target);
+  };
+
+  function scheduleSettle() {
     clearTimeout(settleTimer);
     settleTimer = setTimeout(settle, SETTLE_DELAY);
-  };
+  }
 
-  // While a finger or the mouse (e.g. dragging the scrollbar) is held down,
-  // wait for release; only settle afterwards if the page actually moved.
-  const press = () => { pointerDown = true; scrolledWhileDown = false; clearTimeout(settleTimer); };
-  const release = () => {
-    if (!pointerDown) return;
-    pointerDown = false;
-    if (scrolledWhileDown) scheduleSettle();
-  };
-
-  window.addEventListener('scroll', () => {
-    if (pointerDown) scrolledWhileDown = true;
-    else scheduleSettle();
-  }, { passive: true });
-  window.addEventListener('mousedown', press, { passive: true });
-  window.addEventListener('mouseup', release, { passive: true });
-  window.addEventListener('touchstart', press, { passive: true });
-  window.addEventListener('touchend', release, { passive: true });
-  window.addEventListener('touchcancel', release, { passive: true });
+  window.addEventListener('scroll', () => { if (!animating) scheduleSettle(); }, { passive: true });
+  window.addEventListener('mousedown', () => { mouseDown = true; }, { passive: true });
+  window.addEventListener('mouseup', () => { mouseDown = false; scheduleSettle(); }, { passive: true });
 }
 
 /* ---------- Reveal sections as they scroll into view ---------- */
