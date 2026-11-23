@@ -1271,6 +1271,17 @@ body.hero-scroll-enabled .hero-scroll-title {
    the menu toggle is fixed on its own and stays available. */
 .song-page .site-header { position: absolute; }
 .song-page .header-inner { justify-content: flex-start; }
+/* Song pages: SONIQUE's signature as the logo. The artwork is black ink, so
+   it is turned cream to match the headings on the dark background. */
+.logo-signature { display: block; line-height: 0; }
+.logo-signature img {
+  display: block;
+  width: auto;
+  height: clamp(64px, 6.5vw, 96px);
+  filter: invert(1) sepia(0.3) brightness(0.97) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
+  transition: opacity 0.25s var(--ease);
+}
+.logo-signature:hover img { opacity: 0.8; }
 
 .song-release { padding: clamp(5rem, 8vw, 5.5rem) 0 var(--section-space); }
 .song-release .section-inner { max-width: 1120px; }
@@ -1318,6 +1329,36 @@ body.hero-scroll-enabled .hero-scroll-title {
 }
 .song-listen-button:active { transform: translateY(0); }
 .song-listen-button:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+
+/* Read more: a quieter outline partner to Listen now, linking to the
+   full press release. */
+/* Sits at the end of the song text; em sizes scale with the fitted text. */
+.song-body .song-more { display: flex; margin: 1.6em 0 0; }
+.song-more-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.7em 1.8em;
+  border: 1px solid rgba(245, 232, 217, 0.55);
+  border-radius: 0.5rem;
+  background: rgba(18, 15, 12, 0.35);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 0.95em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease), color 0.25s var(--ease), background 0.25s var(--ease);
+}
+.song-more-button::after { content: "\2197"; font-size: 1.1em; line-height: 1; }
+.song-more-button:hover {
+  transform: translateY(-2px);
+  border-color: #e6a970;
+  background: rgba(230, 169, 112, 0.12);
+  color: #f0c49a;
+}
+.song-more-button:active { transform: translateY(0); }
+.song-more-button:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
 
 .song-layout {
   display: grid;
@@ -1396,7 +1437,9 @@ body.hero-scroll-enabled .hero-scroll-title {
     align-items: start;
   }
   .song-cover { max-width: none; }
-  .song-page .logo { font-size: clamp(1.8rem, 2.2vw, 2.4rem); line-height: 1.2; }
+  /* Text too short to fill the cover's height sits level with its middle. */
+  .song-body { align-self: center; }
+  .song-page .logo:not(.logo-signature) { font-size: clamp(1.8rem, 2.2vw, 2.4rem); line-height: 1.2; }
 }
 
 @media (min-width: 861px) {
