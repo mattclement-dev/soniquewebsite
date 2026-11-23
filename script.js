@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCarouselArrows(prefersReducedMotion);
   initSongTextFit();
   initAboutTextFit();
+  initSectionUrls(prefersReducedMotion);
   initSectionSnap(prefersReducedMotion);
   initSignupForm();
   initFooterYear();
@@ -271,6 +272,101 @@ function initAboutTextFit() {
   });
 }
 
+/* ---------- Clean section URLs (homepage) ----------
+   The menu shows /about, /music, ... instead of #about. Clicking a section
+   link glides there and updates the address bar without reloading; the
+   address also follows along as visitors page through, and back/forward
+   return to earlier sections. Opening /music directly is handled by the tiny
+   music/index.html page, which hands the section over (sessionStorage) and
+   returns to the homepage. Old #music links are converted too. */
+function initSectionUrls(prefersReducedMotion) {
+  if (!document.body.classList.contains('home-page') || !window.history.pushState) return;
+
+  const SLUGS = ['about', 'music', 'videos', 'events', 'contact'];
+  const isSlug = (slug) => SLUGS.includes(slug);
+  const sectionFor = (slug) => document.getElementById(slug);
+
+  // The homepage folder, e.g. "/" or "/soniquewebsite/", whatever the current URL.
+  const slugAtEnd = new RegExp('(?:' + SLUGS.join('|') + ')/?$');
+  const base = window.location.pathname
+    .replace(/index\.html$/, '')
+    .replace(slugAtEnd, '')
+    .replace(/\/?$/, '/');
+  const urlFor = (slug) => base + (isSlug(slug) ? slug : '');
+  const slugFromPath = () => window.location.pathname.slice(base.length).replace(/\/$/, '');
+  let currentSlug = null;
+
+  const setUrl = (slug, push) => {
+    currentSlug = slug;
+    const url = urlFor(slug);
+    if (url === window.location.pathname && !window.location.hash) return;
+    try {
+      window.history[push ? 'pushState' : 'replaceState']({ section: slug }, '', url);
+    } catch (_) { /* some browsers rate-limit history updates */ }
+  };
+
+  const goTo = (slug, smooth) => {
+    const section = sectionFor(slug);
+    if (!section) return;
+    const top = slug === 'home' ? 0 : section.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top, behavior: smooth && !prefersReducedMotion ? 'smooth' : 'instant' });
+  };
+
+  // Section links: <a href="music" data-section="music">
+  document.addEventListener('click', (event) => {
+    const link = event.target.closest && event.target.closest('a[data-section]');
+    if (!link || event.defaultPrevented || event.button !== 0
+      || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const slug = link.dataset.section;
+    if (!sectionFor(slug)) return;
+    event.preventDefault();
+    goTo(slug, true);
+    setUrl(slug, true);
+  });
+
+  window.addEventListener('popstate', () => {
+    const slug = isSlug(slugFromPath()) ? slugFromPath() : 'home';
+    currentSlug = slug;
+    goTo(slug, true);
+  });
+
+  // Where to start: /music opened directly (handed over by music/index.html,
+  // or a server that serves the homepage there), or an old #music link.
+  let start = null;
+  try {
+    start = window.sessionStorage.getItem('sonique-section');
+    window.sessionStorage.removeItem('sonique-section');
+  } catch (_) { /* storage blocked */ }
+  if (!isSlug(start)) start = slugFromPath();
+  if (!isSlug(start)) start = window.location.hash.slice(1);
+  if (isSlug(start)) {
+    if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
+    setUrl(start, false);
+    goTo(start, false);
+    // Images and fonts can shift the layout as they load; land again after.
+    window.addEventListener('load', () => { if (currentSlug === start) goTo(start, false); }, { once: true });
+  }
+
+  // Follow along: once scrolling stops, the section across the middle of the
+  // screen names the URL (the hero, above About, is the plain homepage URL).
+  const sections = ['home', ...SLUGS].map(sectionFor).filter(Boolean);
+  let followTimer = 0;
+  const follow = () => {
+    const middle = window.innerHeight / 2;
+    const here = sections.find((s) => {
+      const rect = s.getBoundingClientRect();
+      return rect.top <= middle && rect.bottom > middle;
+    });
+    // Past the last section (the footer) still counts as Contact.
+    const slug = here ? here.id : (window.scrollY > 0 ? SLUGS[SLUGS.length - 1] : 'home');
+    if (slug !== currentSlug) setUrl(slug, false);
+  };
+  window.addEventListener('scroll', () => {
+    clearTimeout(followTimer);
+    followTimer = setTimeout(follow, 150);
+  }, { passive: true });
+}
+
 /* ---------- Page-by-page section scrolling (homepage) ----------
    Each wheel notch / trackpad gesture / swipe / Page key moves exactly one
    section, with a smooth glide and a short pause on arrival so continuous
@@ -489,7 +585,7 @@ function initSectionSnap(prefersReducedMotion) {
   let mouseDown = false;
 
   document.addEventListener('click', (event) => {
-    if (event.target.closest && event.target.closest('a[href^="#"]')) jumpedByLink = true;
+    if (event.target.closest && event.target.closest('a[href^="#"], a[data-section]')) jumpedByLink = true;
   });
 
   const settle = () => {
