@@ -328,8 +328,9 @@ function initSectionUrls(reducedMotion) {
   }, { passive: true });
 }
 
-/* Homepage paging: wheel, keys and swipes move one section at a time,
-   while tall sections can still be scrolled through normally. */
+/* Homepage paging: wheel, keys and swipes move one section at a time.
+   Sections taller than the screen (About on phones) scroll within their own
+   edges first, so a hard swipe can't carry past them. */
 function initSectionSnap(reducedMotion) {
   if (!document.querySelector('.site-content-mask')) return;
 
@@ -347,6 +348,7 @@ function initSectionSnap(reducedMotion) {
   const SETTLE_DELAY = 160;   // ms of stillness before tidying a native scroll
   const MIN_MOVE = 10;        // px
   const MIN_DISTANCE = 4;     // px
+  const FLING = 300;          // ms of finger velocity carried on after a swipe inside a tall section
 
   let animating = false;
   let pauseUntil = 0;
@@ -382,19 +384,27 @@ function initSectionSnap(reducedMotion) {
   };
   const pointsOf = (stops) => stops.flatMap((s) => (s.start === s.end ? [s.start] : [s.start, s.end]));
 
-  // Distance left to scroll natively inside the current tall section (0 if not in one).
-  const roomInTallSection = (dir) => {
+  // The tall section the page is currently inside, if any.
+  const tallSectionHere = () => {
     const y = window.scrollY;
-    for (const s of getStops()) {
-      if (s.start === s.end || y < s.start - 1 || y > s.end + 1) continue;
-      return dir > 0 ? Math.max(0, s.end - y) : Math.max(0, y - s.start);
-    }
-    return 0;
+    return getStops().find((s) => s.start !== s.end && y >= s.start - 1 && y <= s.end + 1) || null;
+  };
+
+  // Distance left to scroll inside the current tall section (0 if not in one).
+  const roomInTallSection = (dir) => {
+    const s = tallSectionHere();
+    if (!s) return 0;
+    const y = window.scrollY;
+    return dir > 0 ? Math.max(0, s.end - y) : Math.max(0, y - s.start);
   };
 
   const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+  const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 
-  const glideTo = (target) => {
+  let glideId = 0;
+  let glideCancelable = false;
+
+  const glideTo = (target, { duration, ease = easeInOutCubic, pause = PAUSE, cancelable = false } = {}) => {
     const from = window.scrollY;
     const distance = target - from;
     settledAt = target;
@@ -402,25 +412,34 @@ function initSectionSnap(reducedMotion) {
 
     if (reducedMotion) {
       window.scrollTo({ top: target, behavior: 'instant' });
-      pauseUntil = performance.now() + PAUSE;
+      pauseUntil = performance.now() + pause;
       return;
     }
 
-    const duration = Math.min(GLIDE_MAX, Math.max(GLIDE_MIN, 360 + Math.abs(distance) * 0.2));
+    const time = duration ?? Math.min(GLIDE_MAX, Math.max(GLIDE_MIN, 360 + Math.abs(distance) * 0.2));
     const startTime = performance.now();
+    const id = ++glideId;
+    glideCancelable = cancelable;
     animating = true;
 
     const frame = (now) => {
-      const t = Math.min(1, (now - startTime) / duration);
-      window.scrollTo({ top: from + distance * easeInOutCubic(t), behavior: 'instant' });
+      if (id !== glideId) return;
+      const t = Math.min(1, (now - startTime) / time);
+      window.scrollTo({ top: from + distance * ease(t), behavior: 'instant' });
       if (t < 1) {
         requestAnimationFrame(frame);
       } else {
         animating = false;
-        pauseUntil = performance.now() + PAUSE;
+        pauseUntil = performance.now() + pause;
       }
     };
     requestAnimationFrame(frame);
+  };
+
+  const cancelGlide = () => {
+    glideId++;
+    animating = false;
+    settledAt = window.scrollY;
   };
 
   window.addEventListener('sonique:section-navigation', (event) => {
@@ -484,12 +503,21 @@ function initSectionSnap(reducedMotion) {
     if (handleIntent(dir, distance)) event.preventDefault();
   });
 
+  // Swipes inside a tall section move the page with the finger (clamped to the
+  // section's edges, with a short fling on release); anywhere else a swipe steps a page.
   let touchStartX = 0;
   let touchStartY = 0;
-  let touchMode = null; // null (undecided) | 'native' | 'page' | 'ignore'
+  let touchMode = null; // null (undecided) | 'drag' | 'page' | 'ignore'
   let touchDir = 0;
+  let fingerDown = false;
+  let drag = null; // { bounds, startY, startScroll }
+  let lastTouchY = 0;
+  let lastTouchTime = 0;
+  let velocity = 0; // px per ms, in the finger's direction
 
   window.addEventListener('touchstart', (event) => {
+    fingerDown = true;
+    if (animating && glideCancelable) cancelGlide(); // catch a fling in progress
     if (event.touches.length !== 1 || navOpen()) { touchMode = 'ignore'; return; }
     touchStartX = event.touches[0].clientX;
     touchStartY = event.touches[0].clientY;
@@ -497,32 +525,62 @@ function initSectionSnap(reducedMotion) {
   }, { passive: true });
 
   window.addEventListener('touchmove', (event) => {
-    if (touchMode === 'ignore' || touchMode === 'native') return;
+    if (touchMode === 'ignore') return;
     if (touchMode === 'page') { event.preventDefault(); return; }
 
-    const dx = event.touches[0].clientX - touchStartX;
-    const dy = event.touches[0].clientY - touchStartY;
+    const x = event.touches[0].clientX;
+    const y = event.touches[0].clientY;
+    const now = performance.now();
+
+    if (touchMode === 'drag') {
+      event.preventDefault();
+      velocity = (y - lastTouchY) / Math.max(1, now - lastTouchTime);
+      lastTouchY = y;
+      lastTouchTime = now;
+      const top = drag.startScroll - (y - drag.startY);
+      window.scrollTo({ top: Math.max(drag.bounds.start, Math.min(drag.bounds.end, top)), behavior: 'instant' });
+      return;
+    }
+
+    const dx = x - touchStartX;
+    const dy = y - touchStartY;
     if (Math.max(Math.abs(dx), Math.abs(dy)) < 8) return;
 
     if (Math.abs(dx) > Math.abs(dy)) { touchMode = 'ignore'; return; } // carousel swipe
-    touchDir = dy < 0 ? 1 : -1;
+    touchDir = dy < 0 ? 1 : -1; // finger up = scroll down
+    event.preventDefault();
 
-    if (isLocked() || roomInTallSection(touchDir) <= 1) {
-      touchMode = 'page';
-      event.preventDefault();
+    if (!isLocked() && roomInTallSection(touchDir) > 1) {
+      touchMode = 'drag';
+      drag = { bounds: tallSectionHere(), startY: y, startScroll: window.scrollY };
+      lastTouchY = y;
+      lastTouchTime = now;
+      velocity = 0;
     } else {
-      touchMode = 'native';
+      touchMode = 'page';
     }
   }, { passive: false });
 
-  window.addEventListener('touchend', (event) => {
+  const endTouch = (event) => {
+    fingerDown = event.touches.length > 0;
     if (touchMode === 'page' && !isLocked()) {
       const dy = event.changedTouches[0].clientY - touchStartY;
       if (Math.abs(dy) >= SWIPE_MIN) step(touchDir);
+    } else if (touchMode === 'drag') {
+      const stillFor = performance.now() - lastTouchTime;
+      const fling = stillFor > 100 ? 0 : -velocity * FLING;
+      const target = Math.max(drag.bounds.start, Math.min(drag.bounds.end, window.scrollY + fling));
+      if (!reducedMotion && Math.abs(target - window.scrollY) > 20) {
+        glideTo(target, { duration: 600, ease: easeOutCubic, pause: 0, cancelable: true });
+      } else {
+        settledAt = window.scrollY;
+      }
+      drag = null;
     }
-    if (touchMode === 'native') scheduleSettle();
     touchMode = null;
-  }, { passive: true });
+  };
+  window.addEventListener('touchend', endTouch, { passive: true });
+  window.addEventListener('touchcancel', endTouch, { passive: true });
 
   // After native scrolling (scrollbar drag, Home/End, in-page links) leaves the
   // page between stops, carry on in the direction travelled, or to the nearest
@@ -535,7 +593,7 @@ function initSectionSnap(reducedMotion) {
   });
 
   const settle = () => {
-    if (animating || mouseDown || touchMode === 'native' || navOpen()) return;
+    if (animating || mouseDown || fingerDown || navOpen()) return;
 
     const y = window.scrollY;
     const stops = getStops();
