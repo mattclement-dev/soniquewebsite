@@ -1,6 +1,4 @@
-/* ==========================================================================
-   SONIQUE — Site interactions (shared across all pages)
-   ========================================================================== */
+/* Site interactions */
 
 document.addEventListener('DOMContentLoaded', () => {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -15,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initAboutTextFit();
   initSectionUrls(prefersReducedMotion);
   initSectionSnap(prefersReducedMotion);
-  initSignupForm();
   initFooterYear();
 });
 
@@ -92,10 +89,7 @@ function initCarouselWheelScroll() {
   });
 }
 
-/* ---------- Drag carousels with the mouse (left button) ----------
-   Touch already swipes natively; this gives mouse users the same feel.
-   A short drag still counts as a click on a cover/video; a real drag
-   swallows that click so you don't accidentally open a link. */
+/* Mouse dragging for carousels; preserve clicks unless the pointer drags. */
 function initCarouselMouseDrag(prefersReducedMotion) {
   const DRAG_THRESHOLD = 6; // px of movement before it counts as a drag
 
@@ -272,13 +266,7 @@ function initAboutTextFit() {
   });
 }
 
-/* ---------- Clean section URLs (homepage) ----------
-   The menu shows /about, /music, ... instead of #about. Clicking a section
-   link glides there and updates the address bar without reloading; the
-   address also follows along as visitors page through, and back/forward
-   return to earlier sections. Opening /music directly is handled by the tiny
-   music/index.html page, which hands the section over (sessionStorage) and
-   returns to the homepage. Old #music links are converted too. */
+/* Keep homepage section URLs and browser history in sync. */
 function initSectionUrls(prefersReducedMotion) {
   if (!document.body.classList.contains('home-page') || !window.history.pushState) return;
 
@@ -312,7 +300,6 @@ function initSectionUrls(prefersReducedMotion) {
     window.scrollTo({ top, behavior: smooth && !prefersReducedMotion ? 'smooth' : 'instant' });
   };
 
-  // Section links: <a href="music" data-section="music">
   document.addEventListener('click', (event) => {
     const link = event.target.closest && event.target.closest('a[data-section]');
     if (!link || event.defaultPrevented || event.button !== 0
@@ -320,8 +307,13 @@ function initSectionUrls(prefersReducedMotion) {
     const slug = link.dataset.section;
     if (!sectionFor(slug)) return;
     event.preventDefault();
-    goTo(slug, true);
     setUrl(slug, true);
+    const navigation = new CustomEvent('sonique:section-navigation', {
+      detail: { slug },
+      cancelable: true,
+    });
+    window.dispatchEvent(navigation);
+    if (!navigation.defaultPrevented) goTo(slug, true);
   });
 
   window.addEventListener('popstate', () => {
@@ -330,8 +322,7 @@ function initSectionUrls(prefersReducedMotion) {
     goTo(slug, true);
   });
 
-  // Where to start: /music opened directly (handed over by music/index.html,
-  // or a server that serves the homepage there), or an old #music link.
+  // Restore section deep links, including /music redirects.
   let start = null;
   try {
     start = window.sessionStorage.getItem('sonique-section');
@@ -367,16 +358,10 @@ function initSectionUrls(prefersReducedMotion) {
   }, { passive: true });
 }
 
-/* ---------- Page-by-page section scrolling (homepage) ----------
-   Each wheel notch / trackpad gesture / swipe / Page key moves exactly one
-   section, with a smooth glide and a short pause on arrival so continuous
-   scrolling steps through calmly instead of racing. Sections that fit on
-   screen are centred below the fixed header. Sections taller than the screen
-   (e.g. About, Contact + footer) scroll normally inside; the next scroll past
-   their top or bottom edge steps to the neighbouring section. */
+/* Snap homepage scrolling between sections while allowing reading in tall ones. */
 function initSectionSnap(prefersReducedMotion) {
   const contentMask = document.querySelector('.site-content-mask');
-  if (!contentMask || prefersReducedMotion) return;
+  if (!contentMask) return;
 
   const sections = Array.from(document.querySelectorAll('#main > section, .site-content-mask > section'));
   if (!sections.length) return;
@@ -456,6 +441,12 @@ function initSectionSnap(prefersReducedMotion) {
     settledAt = target;
     if (Math.abs(distance) < MIN_DISTANCE) return;
 
+    if (prefersReducedMotion) {
+      window.scrollTo({ top: target, behavior: 'instant' });
+      pauseUntil = performance.now() + PAUSE;
+      return;
+    }
+
     const duration = Math.min(GLIDE_MAX, Math.max(GLIDE_MIN, 360 + Math.abs(distance) * 0.2));
     const startTime = performance.now();
     animating = true;
@@ -472,6 +463,13 @@ function initSectionSnap(prefersReducedMotion) {
     };
     requestAnimationFrame(frame);
   };
+
+  window.addEventListener('sonique:section-navigation', (event) => {
+    const index = sections.findIndex((section) => section.id === event.detail.slug);
+    if (index < 0) return;
+    event.preventDefault();
+    glideTo(getStops()[index].start);
+  });
 
   // Move one section in the given direction (1 = down, -1 = up).
   const step = (dir) => {
@@ -585,7 +583,7 @@ function initSectionSnap(prefersReducedMotion) {
   let mouseDown = false;
 
   document.addEventListener('click', (event) => {
-    if (event.target.closest && event.target.closest('a[href^="#"], a[data-section]')) jumpedByLink = true;
+    if (event.target.closest && event.target.closest('a[href^="#"]')) jumpedByLink = true;
   });
 
   const settle = () => {
@@ -641,35 +639,6 @@ function initScrollReveal(prefersReducedMotion) {
   );
 
   revealEls.forEach((el) => observer.observe(el));
-}
-
-/* ---------- Newsletter signup (front-end only placeholder) ----------
-   Kept for any other page that may still include a #signup-form.
-   The homepage no longer has this form, so this simply no-ops there. */
-function initSignupForm() {
-  const form = document.getElementById('signup-form');
-  const note = document.getElementById('form-note');
-  if (!form || !note) return;
-
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
-
-    const emailInput = form.querySelector('#email');
-    const email = emailInput ? emailInput.value.trim() : '';
-    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-    if (!isValid) {
-      note.textContent = 'Please enter a valid email address.';
-      note.style.color = '#c0716f';
-      return;
-    }
-
-    // NOTE: This is a front-end placeholder only.
-    // Connect this to Mailchimp, ConvertKit, Formspree, etc. to actually collect emails.
-    note.textContent = `Thanks — you're on the list, ${email}.`;
-    note.style.color = '';
-    form.reset();
-  });
 }
 
 /* ---------- Footer year ---------- */

@@ -1,26 +1,14 @@
-/* ==========================================================================
-   SONIQUE — Site stylesheet
-   Design tokens live at the top. Change these to re-theme the whole site.
-
-   THEME: dark distorted-vinyl background (images/background.webp) with
-   warm orange spotlighting. Cards/panels use a translucent frosted-glass
-   treatment so the background glows through; text tokens flip to warm
-   off-white so everything stays readable over the photo.
-   ========================================================================== */
+/* SONIQUE site styles */
 
 :root {
-  /* Color — vinyl / spotlight palette (from images/background.webp) */
-  --bg: #12100D;                       /* darkest — page base, footer */
-  --bg-alt: #1c150f;                   /* slightly lifted dark, section alt */
-  --panel: rgba(43, 30, 20, 0.78);     /* frosted card surface (over bg image) */
-  --panel-solid: #2B1E14;              /* solid panel, used inside placeholders */
-  --ink: #F5E8D9;                      /* primary text — warm off-white */
-  --ink-dim: #C4A98A;                  /* secondary text — warm tan */
-  --pink: #C17735;                     /* primary accent — spotlight orange */
-  --pink-deep: #E0985A;                /* bright accent / hover state */
-  --peach: #7C4D26;                    /* secondary accent — toasted brown */
-  --peach-deep: #C17735;
-  --blue: #4F341C;                     /* tertiary accent — deep umber */
+  /* Color */
+  --bg: #12100D;
+  --bg-alt: #1c150f;
+  --panel: rgba(43, 30, 20, 0.78);
+  --ink: #F5E8D9;
+  --ink-dim: #C4A98A;
+  --pink: #C17735;
+  --pink-deep: #E0985A;
   --blue-deep: #E0985A;
   --line: rgba(245, 232, 217, 0.10);
   --line-strong: rgba(245, 232, 217, 0.22);
@@ -117,13 +105,6 @@ section:not(.hero) h2 {
   text-shadow: 0 2px 20px rgba(0, 0, 0, 0.35);
 }
 .section-lede { max-width: 56ch; font-size: 1.05rem; }
-
-/* ---------- Ambient background blobs ----------
-   The photo background now supplies the glow/atmosphere, so the old
-   flat-color blobs are switched off to avoid competing with it. Left in
-   place (rather than deleted) in case you want to bring back a little
-   extra color pooling near a specific section later. */
-.blob { display: none; }
 
 /* ---------- Buttons & pills ---------- */
 .btn {
@@ -361,17 +342,6 @@ section.page-hero {
   padding-top: 1.5rem;
 }
 
-/* ---------- Photo placeholder (swap for real images) ---------- */
-.photo-placeholder {
-  height: 100%; width: 100%;
-  background: linear-gradient(155deg, var(--pink) 0%, var(--peach) 55%, var(--blue) 130%);
-  display: flex; align-items: center; justify-content: center;
-  text-align: center; color: var(--ink);
-  font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.04em;
-  padding: 1rem;
-}
-.photo-placeholder.subtle { background: linear-gradient(155deg, var(--bg-alt), var(--panel-solid)); color: var(--ink-dim); }
-
 /* ---------- Reveal-on-scroll ---------- */
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
 .reveal.in-view { opacity: 1; transform: translateY(0); }
@@ -420,14 +390,14 @@ section.page-hero {
   flex: 0 0 clamp(280px, 30vw, 440px);
   scroll-snap-align: start;
 }
-.release-cover-link { display: block; overflow: hidden; }
-.release-cover-link img {
+.release-cover { display: block; overflow: hidden; }
+.release-cover img {
   width: 100%;
   aspect-ratio: 1;
   object-fit: cover;
   transition: transform 0.35s var(--ease);
 }
-.release-cover-link:hover img { transform: scale(1.03); }
+.release-cover:hover img { transform: scale(1.03); }
 .release-item h3 {
   margin: 0.85rem 0 0;
   text-align: center;
@@ -495,75 +465,6 @@ section.page-hero {
 /* Swipe hint arrows — mobile/tablet only (see max-width: 860px below) */
 .carousel-frame { position: relative; }
 .carousel-arrow { display: none; }
-
-.music-videos-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(1.5rem, 3vw, 2.5rem);
-}
-.music-video h3 { margin-bottom: 0.9rem; font-size: 1.2rem; }
-
-/* ---------- Music video embed (latest release) ---------- */
-.video-card {
-  background: var(--panel);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 1.75rem;
-  margin-bottom: 1.75rem;
-}
-.video-card .eyebrow { margin-bottom: 0.4rem; }
-.video-card h3 { font-size: 1.3rem; margin-bottom: 1.1rem; color: var(--ink); }
-.video-embed {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 10px;
-  overflow: hidden;
-  background: var(--bg-alt);
-}
-.video-embed iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-
-/* ==========================================================================
-   PRESS KIT CARDS
-   ========================================================================== */
-.press-intro-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  background: var(--panel);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 1.75rem 2rem;
-  margin-bottom: 2.5rem;
-}
-.press-intro-card p { margin: 0; max-width: 46ch; }
-.press-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-.press-card {
-  background: var(--panel);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-.press-card-art { aspect-ratio: 16 / 10; }
-.press-card-body { padding: 1.5rem; }
-.press-card-body h3 { font-size: 1.15rem; margin-bottom: 0.25rem; color: var(--ink); }
-.press-card-actions { display: flex; gap: 0.6rem; margin-top: 1.1rem; flex-wrap: wrap; }
 
 /* ==========================================================================
    EVENTS / BANDSINTOWN
@@ -850,32 +751,6 @@ section.page-hero {
   margin-top: 2rem;
 }
 
-/* ==========================================================================
-   CONTACT PAGE (booking)
-   ========================================================================== */
-.contact-page-card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1.5rem;
-  background: var(--panel);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: clamp(2rem, 5vw, 3rem);
-  max-width: 640px;
-}
-.contact-page-card h2 { color: var(--ink); }
-.contact-email-row {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  flex-wrap: wrap;
-  width: 100%;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--line);
-}
 .contact-email {
   font-family: var(--font-mono);
   font-size: 1.05rem;
@@ -883,27 +758,6 @@ section.page-hero {
   color: var(--ink);
   word-break: break-all;
 }
-
-/* ==========================================================================
-   NEWSLETTER / CONTACT (kept for other pages that may still use a signup
-   form — the homepage no longer includes this section)
-   ========================================================================== */
-.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 6vw, 5rem); align-items: center; }
-.signup-form label { display: block; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 0.6rem; }
-.form-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-.signup-form input[type="email"] {
-  flex: 1; min-width: 200px;
-  padding: 0.9rem 1.15rem;
-  background: var(--panel);
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  color: var(--ink);
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-}
-.signup-form input[type="email"]:focus { border-color: var(--pink-deep); outline: none; }
-.signup-form input[type="email"]::placeholder { color: var(--ink-dim); }
-.form-note { margin: 0.85rem 0 0; font-size: 0.85rem; color: var(--blue-deep); min-height: 1.2em; }
 
 /* ==========================================================================
    FOOTER
@@ -920,9 +774,8 @@ section.page-hero {
    RESPONSIVE
    ========================================================================== */
 @media (max-width: 860px) {
-  .bio-grid, .contact-grid { grid-template-columns: 1fr; }
+  .bio-grid { grid-template-columns: 1fr; }
   .bio-photo-frame { position: static; max-width: 360px; }
-  .press-grid { grid-template-columns: 1fr; }
   .gallery-grid { grid-template-columns: repeat(2, 1fr); }
   .gallery-grid .gallery-item:nth-child(1) { grid-column: span 2; }
   .fact-row { grid-template-columns: 1fr 1fr; }
@@ -947,10 +800,8 @@ section.page-hero {
 @media (max-width: 520px) {
   .hero-actions { flex-direction: column; width: 100%; }
   .hero-actions .btn { width: 100%; }
-  .press-intro-card { flex-direction: column; align-items: flex-start; }
   .footer-inner { justify-content: center; text-align: center; }
   .social-grid { grid-template-columns: 1fr; }
-  .contact-email-row { flex-direction: column; align-items: flex-start; }
 }
 
 /* ==========================================================================
@@ -1205,9 +1056,6 @@ body.hero-scroll-enabled .hero-scroll-title {
 }
 .one-page-events .bit-widget-initializer { color: #d8b792; }
 .artist-platforms { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1.5rem 0 2.5rem; }
-.video-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
-.video-grid .video-card { margin: 0; }
-.video-grid .video-card h3 { color: var(--ink); }
 .one-page-contact { padding-bottom: var(--section-space) !important; }
 .one-page-contact .contact-content {
   max-width: 1720px;
@@ -1622,8 +1470,6 @@ body.hero-scroll-enabled .hero-scroll-title {
   .bio-grid { grid-template-columns: 1fr; max-width: 430px; }
   .bio-photo-frame { max-width: 280px; margin: 0 auto; }
   .about-copy p { font-size: 0.9rem; }
-  .video-grid { grid-template-columns: 1fr; }
-  .music-videos-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 520px) and (orientation: portrait) {

@@ -1,1 +1,1 @@
-https://mattclement-dev.github.io/soniquewebsite/
+https://sonique.co.za/
