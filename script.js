@@ -449,10 +449,10 @@ function initSectionSnap(reducedMotion) {
     glideTo(getStops()[index].start);
   });
 
-  const step = (dir) => {
+  const step = (dir, options) => {
     const y = window.scrollY;
     const ahead = pointsOf(getStops()).filter((p) => (dir > 0 ? p > y + 2 : p < y - 2));
-    if (ahead.length) glideTo(nearest(ahead, y));
+    if (ahead.length) glideTo(nearest(ahead, y), options);
   };
 
   // Scroll natively inside a tall section, otherwise step a page.
@@ -510,13 +510,22 @@ function initSectionSnap(reducedMotion) {
   let touchMode = null; // null (undecided) | 'drag' | 'page' | 'ignore'
   let touchDir = 0;
   let fingerDown = false;
+  let stepped = false; // this swipe has already moved a page
   let drag = null; // { bounds, startY, startScroll }
+
+  // Swipe steps start fast and ease into place, so the page responds straight away.
+  const swipeStep = () => {
+    if (stepped || isLocked()) return;
+    stepped = true;
+    step(touchDir, { ease: easeOutCubic });
+  };
   let lastTouchY = 0;
   let lastTouchTime = 0;
   let velocity = 0; // px per ms, in the finger's direction
 
   window.addEventListener('touchstart', (event) => {
     fingerDown = true;
+    stepped = false;
     if (animating && glideCancelable) cancelGlide(); // catch a fling in progress
     if (event.touches.length !== 1 || navOpen()) { touchMode = 'ignore'; return; }
     touchStartX = event.touches[0].clientX;
@@ -526,11 +535,16 @@ function initSectionSnap(reducedMotion) {
 
   window.addEventListener('touchmove', (event) => {
     if (touchMode === 'ignore') return;
-    if (touchMode === 'page') { event.preventDefault(); return; }
-
     const x = event.touches[0].clientX;
     const y = event.touches[0].clientY;
     const now = performance.now();
+
+    // Move as soon as the swipe is clearly a page change, without waiting for release.
+    if (touchMode === 'page') {
+      event.preventDefault();
+      if (Math.abs(y - touchStartY) >= SWIPE_MIN) swipeStep();
+      return;
+    }
 
     if (touchMode === 'drag') {
       event.preventDefault();
@@ -563,9 +577,10 @@ function initSectionSnap(reducedMotion) {
 
   const endTouch = (event) => {
     fingerDown = event.touches.length > 0;
-    if (touchMode === 'page' && !isLocked()) {
+    if (touchMode === 'page') {
+      // A quick flick can end before a touchmove passes the threshold.
       const dy = event.changedTouches[0].clientY - touchStartY;
-      if (Math.abs(dy) >= SWIPE_MIN) step(touchDir);
+      if (Math.abs(dy) >= SWIPE_MIN) swipeStep();
     } else if (touchMode === 'drag') {
       const stillFor = performance.now() - lastTouchTime;
       const fling = stillFor > 100 ? 0 : -velocity * FLING;
@@ -637,7 +652,7 @@ function initScrollReveal(reducedMotion) {
       entry.target.classList.add('in-view');
       observer.unobserve(entry.target);
     });
-  }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+  }, { threshold: 0, rootMargin: '0px 0px 20% 0px' }); // start just before it scrolls into view
 
   revealEls.forEach((el) => observer.observe(el));
 }
