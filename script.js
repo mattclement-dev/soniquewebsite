@@ -1,42 +1,44 @@
-/* Site interactions */
-
 document.addEventListener('DOMContentLoaded', () => {
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   initMobileMenu();
-  initHeroScroll(prefersReducedMotion);
-  initScrollReveal(prefersReducedMotion);
+  initHeroScroll(reducedMotion);
+  initScrollReveal(reducedMotion);
   initCarouselWheelScroll();
-  initCarouselMouseDrag(prefersReducedMotion);
-  initCarouselArrows(prefersReducedMotion);
-  initSongTextFit();
-  initAboutTextFit();
-  initSectionUrls(prefersReducedMotion);
-  initSectionSnap(prefersReducedMotion);
+  initCarouselMouseDrag(reducedMotion);
+  initCarouselArrows(reducedMotion);
+  initTextFit();
+  initSectionUrls(reducedMotion);
+  initSectionSnap(reducedMotion);
   initFooterYear();
+  initEpkDownload();
+  initHomeHeaderSignature();
 });
 
-/* ---------- Hero: scroll the name away ---------- */
-function initHeroScroll(prefersReducedMotion) {
-  const hero = document.querySelector('.hero-scroll');
-  const title = document.querySelector('.hero-scroll-title');
-  if (!hero || !title) return;
+const CAROUSELS = '.release-carousel, .video-carousel';
 
-  document.body.classList.toggle('hero-scroll-enabled', !prefersReducedMotion);
+const isModifiedClick = (event) =>
+  event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
+
+const nearest = (points, y) => points.reduce((a, b) => (Math.abs(a - y) < Math.abs(b - y) ? a : b));
+
+/* Fade the hero name out and up as the page scrolls. */
+function initHeroScroll(reducedMotion) {
+  const title = document.querySelector('.hero-scroll-title');
+  if (!title || reducedMotion) return;
+
+  document.body.classList.add('hero-scroll-enabled');
   let frameRequested = false;
   const update = () => {
     const progress = Math.min(1, Math.max(0, window.scrollY / (window.innerHeight * 0.85)));
-    if (!prefersReducedMotion) {
-      title.style.transform = `translate3d(-50%, ${-progress * 92}vh, 0)`;
-      title.style.opacity = String(Math.max(0, 1 - progress * 1.4));
-    }
+    title.style.transform = `translate3d(-50%, ${-progress * 92}vh, 0)`;
+    title.style.opacity = String(Math.max(0, 1 - progress * 1.4));
     frameRequested = false;
   };
-
   const onScroll = () => {
     if (frameRequested) return;
     frameRequested = true;
-    window.requestAnimationFrame(update);
+    requestAnimationFrame(update);
   };
 
   update();
@@ -44,65 +46,54 @@ function initHeroScroll(prefersReducedMotion) {
   window.addEventListener('resize', onScroll, { passive: true });
 }
 
-/* ---------- Mobile menu toggle ---------- */
 function initMobileMenu() {
   const toggle = document.getElementById('menu-toggle');
   const nav = document.getElementById('main-nav');
   if (!toggle || !nav) return;
 
-  toggle.addEventListener('click', () => {
-    const isOpen = nav.classList.toggle('open');
-    toggle.setAttribute('aria-expanded', String(isOpen));
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-  });
+  const setOpen = (open) => {
+    nav.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
 
-  nav.querySelectorAll('.nav-link').forEach((link) => {
-    link.addEventListener('click', () => {
-      nav.classList.remove('open');
-      toggle.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    });
-  });
+  toggle.addEventListener('click', () => setOpen(!nav.classList.contains('open')));
+  nav.querySelectorAll('.nav-link').forEach((link) => link.addEventListener('click', () => setOpen(false)));
 }
 
-/* ---------- Scroll carousels horizontally with a mouse wheel ---------- */
+/* Let a vertical mouse wheel scroll carousels sideways. */
 function initCarouselWheelScroll() {
-  document.querySelectorAll('.release-carousel, .video-carousel, .photo-carousel').forEach((carousel) => {
+  document.querySelectorAll(CAROUSELS).forEach((carousel) => {
     carousel.addEventListener('wheel', (event) => {
-      const wheelDelta = event.deltaX || event.deltaY;
-      if (wheelDelta === 0) return;
+      const delta = event.deltaX || event.deltaY;
+      if (delta === 0) return;
 
-      const deltaMultiplier = event.deltaMode === WheelEvent.DOM_DELTA_LINE
-        ? 16
-        : event.deltaMode === WheelEvent.DOM_DELTA_PAGE
-          ? carousel.clientWidth
+      const unit = event.deltaMode === WheelEvent.DOM_DELTA_LINE ? 16
+        : event.deltaMode === WheelEvent.DOM_DELTA_PAGE ? carousel.clientWidth
           : 1;
-      const scrollDelta = wheelDelta * deltaMultiplier;
-
       const maxScroll = carousel.scrollWidth - carousel.clientWidth;
-      const nextScrollLeft = Math.max(0, Math.min(maxScroll, carousel.scrollLeft + scrollDelta));
-      if (nextScrollLeft === carousel.scrollLeft) return;
+      const next = Math.max(0, Math.min(maxScroll, carousel.scrollLeft + delta * unit));
+      if (next === carousel.scrollLeft) return;
 
       event.preventDefault();
-      carousel.scrollLeft = nextScrollLeft;
+      carousel.scrollLeft = next;
     }, { passive: false });
   });
 }
 
-/* Mouse dragging for carousels; preserve clicks unless the pointer drags. */
-function initCarouselMouseDrag(prefersReducedMotion) {
-  const DRAG_THRESHOLD = 6; // px of movement before it counts as a drag
+/* Drag carousels with the mouse, without breaking clicks on their links. */
+function initCarouselMouseDrag(reducedMotion) {
+  const DRAG_THRESHOLD = 6;
 
-  document.querySelectorAll('.release-carousel, .video-carousel').forEach((carousel) => {
+  document.querySelectorAll(CAROUSELS).forEach((carousel) => {
     let pointerId = null;
     let startX = 0;
     let startScroll = 0;
     let dragging = false;
     let lastX = 0;
     let lastTime = 0;
-    let velocity = 0; // px per ms
+    let velocity = 0;
 
-    // Stop the browser's native image/link drag ghost.
     carousel.addEventListener('dragstart', (event) => event.preventDefault());
 
     carousel.addEventListener('pointerdown', (event) => {
@@ -127,11 +118,9 @@ function initCarouselMouseDrag(prefersReducedMotion) {
       }
 
       const now = performance.now();
-      const dt = Math.max(1, now - lastTime);
-      velocity = (event.clientX - lastX) / dt;
+      velocity = (event.clientX - lastX) / Math.max(1, now - lastTime);
       lastX = event.clientX;
       lastTime = now;
-
       carousel.scrollLeft = startScroll - dx;
     });
 
@@ -139,6 +128,7 @@ function initCarouselMouseDrag(prefersReducedMotion) {
       if (event.pointerId !== pointerId) return;
       pointerId = null;
       if (!dragging) return;
+      dragging = false;
 
       carousel.classList.remove('is-dragging');
       if (carousel.hasPointerCapture(event.pointerId)) carousel.releasePointerCapture(event.pointerId);
@@ -151,12 +141,8 @@ function initCarouselMouseDrag(prefersReducedMotion) {
       carousel.addEventListener('click', blockClick, { capture: true, once: true });
       setTimeout(() => carousel.removeEventListener('click', blockClick, { capture: true }), 0);
 
-      // A little momentum so a flick keeps gliding.
       const glide = -velocity * 250;
-      if (!prefersReducedMotion && Math.abs(glide) > 20) {
-        carousel.scrollBy({ left: glide, behavior: 'smooth' });
-      }
-      dragging = false;
+      if (!reducedMotion && Math.abs(glide) > 20) carousel.scrollBy({ left: glide, behavior: 'smooth' });
     };
 
     carousel.addEventListener('pointerup', endDrag);
@@ -164,11 +150,10 @@ function initCarouselMouseDrag(prefersReducedMotion) {
   });
 }
 
-/* ---------- Carousel hint arrows (shown on mobile via CSS) ----------
-   Each arrow hides itself when there is nothing more to scroll that way. */
-function initCarouselArrows(prefersReducedMotion) {
+/* Prev/next arrows (small screens); each hides when there is nothing more that way. */
+function initCarouselArrows(reducedMotion) {
   document.querySelectorAll('.carousel-frame').forEach((frame) => {
-    const carousel = frame.querySelector('.release-carousel, .video-carousel');
+    const carousel = frame.querySelector(CAROUSELS);
     const prev = frame.querySelector('.carousel-arrow-prev');
     const next = frame.querySelector('.carousel-arrow-next');
     if (!carousel || !prev || !next) return;
@@ -183,7 +168,7 @@ function initCarouselArrows(prefersReducedMotion) {
       const item = carousel.querySelector('li');
       const gap = parseFloat(getComputedStyle(carousel).columnGap) || 0;
       const distance = item ? item.offsetWidth + gap : carousel.clientWidth * 0.8;
-      carousel.scrollBy({ left: direction * distance, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+      carousel.scrollBy({ left: direction * distance, behavior: reducedMotion ? 'auto' : 'smooth' });
     };
 
     prev.addEventListener('click', () => step(-1));
@@ -195,12 +180,7 @@ function initCarouselArrows(prefersReducedMotion) {
   });
 }
 
-/* ---------- Line text blocks up with the image beside them ----------
-   When text sits next to an image (song cover, About photo), find the font
-   size, within a readable range, at which the text block is exactly as tall
-   as the image, so their tops and bottoms line up. Spacing inside the text
-   uses em, so it scales with the size. Outside the given layout the CSS
-   size is used. */
+/* Size text so it is exactly as tall as the image beside it, within a readable range. */
 function fitTextToImage({ text, image, media, minPx, maxPx }) {
   if (!text || !image) return;
   const layout = window.matchMedia(media);
@@ -212,11 +192,10 @@ function fitTextToImage({ text, image, media, minPx, maxPx }) {
     const target = image.offsetHeight;
     if (!target) return;
 
-    // Measure the text at its natural height, even if the grid stretches it.
+    // Measure natural height even if the grid would stretch it.
     const previousAlign = text.style.alignSelf;
     text.style.alignSelf = 'start';
 
-    // Text height grows with font size, so binary-search the size.
     let lo = minPx;
     let hi = maxPx;
     for (let i = 0; i < 14; i++) {
@@ -238,14 +217,13 @@ function fitTextToImage({ text, image, media, minPx, maxPx }) {
   fit();
   window.addEventListener('resize', scheduleFit, { passive: true });
   window.addEventListener('load', scheduleFit);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(scheduleFit);
+  if (document.fonts) document.fonts.ready.then(scheduleFit);
   const img = image.tagName === 'IMG' ? image : image.querySelector('img');
   if (img && !img.complete) img.addEventListener('load', scheduleFit);
 }
 
-// Song pages: text beside the square cover (side-by-side from 1024px).
-// Keep the breakpoint in sync with the song-page media query in styles.css.
-function initSongTextFit() {
+// Media queries must match the side-by-side breakpoints in styles.css.
+function initTextFit() {
   fitTextToImage({
     text: document.querySelector('.song-body'),
     image: document.querySelector('.song-cover'),
@@ -253,10 +231,6 @@ function initSongTextFit() {
     minPx: 13,
     maxPx: 19,
   });
-}
-
-// Homepage About: bio beside the photo (side-by-side from 861px).
-function initAboutTextFit() {
   fitTextToImage({
     text: document.querySelector('.home-page .about-copy'),
     image: document.querySelector('.home-page .bio-photo-frame'),
@@ -266,30 +240,30 @@ function initAboutTextFit() {
   });
 }
 
-/* Keep homepage section URLs and browser history in sync. */
-function initSectionUrls(prefersReducedMotion) {
-  if (!document.body.classList.contains('home-page') || !window.history.pushState) return;
+/* Keep homepage section URLs (/about, /music, ...) and browser history in sync with scrolling. */
+function initSectionUrls(reducedMotion) {
+  if (!document.body.classList.contains('home-page')) return;
 
   const SLUGS = ['about', 'music', 'videos', 'events', 'contact'];
   const isSlug = (slug) => SLUGS.includes(slug);
   const sectionFor = (slug) => document.getElementById(slug);
 
-  // The homepage folder, e.g. "/" or "/soniquewebsite/", whatever the current URL.
-  const slugAtEnd = new RegExp('(?:' + SLUGS.join('|') + ')/?$');
-  const base = window.location.pathname
+  // Homepage folder, so this also works when the site is served from a subdirectory.
+  const slugAtEnd = new RegExp(`(?:${SLUGS.join('|')})/?$`);
+  const base = location.pathname
     .replace(/index\.html$/, '')
     .replace(slugAtEnd, '')
     .replace(/\/?$/, '/');
   const urlFor = (slug) => base + (isSlug(slug) ? slug : '');
-  const slugFromPath = () => window.location.pathname.slice(base.length).replace(/\/$/, '');
+  const slugFromPath = () => location.pathname.slice(base.length).replace(/\/$/, '');
   let currentSlug = null;
 
   const setUrl = (slug, push) => {
     currentSlug = slug;
     const url = urlFor(slug);
-    if (url === window.location.pathname && !window.location.hash) return;
+    if (url === location.pathname && !location.hash) return;
     try {
-      window.history[push ? 'pushState' : 'replaceState']({ section: slug }, '', url);
+      history[push ? 'pushState' : 'replaceState']({ section: slug }, '', url);
     } catch (_) { /* some browsers rate-limit history updates */ }
   };
 
@@ -297,21 +271,18 @@ function initSectionUrls(prefersReducedMotion) {
     const section = sectionFor(slug);
     if (!section) return;
     const top = slug === 'home' ? 0 : section.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo({ top, behavior: smooth && !prefersReducedMotion ? 'smooth' : 'instant' });
+    window.scrollTo({ top, behavior: smooth && !reducedMotion ? 'smooth' : 'instant' });
   };
 
   document.addEventListener('click', (event) => {
-    const link = event.target.closest && event.target.closest('a[data-section]');
-    if (!link || event.defaultPrevented || event.button !== 0
-      || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const link = event.target.closest('a[data-section]');
+    if (!link || event.defaultPrevented || isModifiedClick(event)) return;
     const slug = link.dataset.section;
     if (!sectionFor(slug)) return;
     event.preventDefault();
     setUrl(slug, true);
-    const navigation = new CustomEvent('sonique:section-navigation', {
-      detail: { slug },
-      cancelable: true,
-    });
+    // initSectionSnap handles the scroll itself if it's active.
+    const navigation = new CustomEvent('sonique:section-navigation', { detail: { slug }, cancelable: true });
     window.dispatchEvent(navigation);
     if (!navigation.defaultPrevented) goTo(slug, true);
   });
@@ -322,24 +293,23 @@ function initSectionUrls(prefersReducedMotion) {
     goTo(slug, true);
   });
 
-  // Restore section deep links, including /music redirects.
+  // Deep links: /about etc. redirect here and leave the section in sessionStorage.
   let start = null;
   try {
-    start = window.sessionStorage.getItem('sonique-section');
-    window.sessionStorage.removeItem('sonique-section');
+    start = sessionStorage.getItem('sonique-section');
+    sessionStorage.removeItem('sonique-section');
   } catch (_) { /* storage blocked */ }
   if (!isSlug(start)) start = slugFromPath();
-  if (!isSlug(start)) start = window.location.hash.slice(1);
+  if (!isSlug(start)) start = location.hash.slice(1);
   if (isSlug(start)) {
-    if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
+    history.scrollRestoration = 'manual';
     setUrl(start, false);
     goTo(start, false);
-    // Images and fonts can shift the layout as they load; land again after.
+    // Images and fonts can shift the layout as they load.
     window.addEventListener('load', () => { if (currentSlug === start) goTo(start, false); }, { once: true });
   }
 
-  // Follow along: once scrolling stops, the section across the middle of the
-  // screen names the URL (the hero, above About, is the plain homepage URL).
+  // Once scrolling stops, the section across the middle of the screen names the URL.
   const sections = ['home', ...SLUGS].map(sectionFor).filter(Boolean);
   let followTimer = 0;
   const follow = () => {
@@ -348,7 +318,7 @@ function initSectionUrls(prefersReducedMotion) {
       const rect = s.getBoundingClientRect();
       return rect.top <= middle && rect.bottom > middle;
     });
-    // Past the last section (the footer) still counts as Contact.
+    // Below the last section (the footer) still counts as Contact.
     const slug = here ? here.id : (window.scrollY > 0 ? SLUGS[SLUGS.length - 1] : 'home');
     if (slug !== currentSlug) setUrl(slug, false);
   };
@@ -358,24 +328,22 @@ function initSectionUrls(prefersReducedMotion) {
   }, { passive: true });
 }
 
-/* Snap homepage scrolling between sections while allowing reading in tall ones. */
-function initSectionSnap(prefersReducedMotion) {
-  const contentMask = document.querySelector('.site-content-mask');
-  if (!contentMask) return;
+/* Homepage paging: wheel, keys and swipes move one section at a time,
+   while tall sections can still be scrolled through normally. */
+function initSectionSnap(reducedMotion) {
+  if (!document.querySelector('.site-content-mask')) return;
 
   const sections = Array.from(document.querySelectorAll('#main > section, .site-content-mask > section'));
   if (!sections.length) return;
   const nav = document.getElementById('main-nav');
-  // The footer is framed together with the last section (Contact), so the
-  // copyright line is shown there instead of being snapped away.
   const footer = document.querySelector('.site-footer');
   const lastSection = sections[sections.length - 1];
 
-  const GLIDE_MIN = 480;      // ms — shortest page-to-page glide
-  const GLIDE_MAX = 720;      // ms — longest
-  const PAUSE = 150;          // ms — break after arriving before the next step
-  const SWIPE_MIN = 40;       // px a finger must travel to change page
-  const FIT_TOLERANCE = 1.15; // up to 15% taller than the screen still "fits"
+  const GLIDE_MIN = 480;      // ms
+  const GLIDE_MAX = 720;      // ms
+  const PAUSE = 150;          // ms after arriving before the next step
+  const SWIPE_MIN = 40;       // px
+  const FIT_TOLERANCE = 1.15; // sections up to 15% taller than the screen still count as fitting
   const SETTLE_DELAY = 160;   // ms of stillness before tidying a native scroll
   const MIN_MOVE = 10;        // px
   const MIN_DISTANCE = 4;     // px
@@ -390,16 +358,11 @@ function initSectionSnap(prefersReducedMotion) {
   const isLocked = () => animating || performance.now() < pauseUntil;
   const navOpen = () => nav && nav.classList.contains('open');
 
-  /* ---- Geometry ---- */
-  // Rest positions per section: short ones have a single centred stop;
-  // tall ones a start (top edge) and end (bottom edge) with free reading between.
+  // Rest positions: short sections have one centred stop; tall ones have a
+  // start and end stop with free scrolling between. The footer belongs to the last section.
   const getStops = () => {
     const scrollY = window.scrollY;
     const viewHeight = window.innerHeight;
-    // The homepage header is a transparent overlay (just the menu button),
-    // so sections are framed against the full window.
-    const headerHeight = 0;
-    const visibleHeight = viewHeight - headerHeight;
     const maxScroll = document.documentElement.scrollHeight - viewHeight;
     const clamp = (y) => Math.max(0, Math.min(maxScroll, y));
 
@@ -410,19 +373,16 @@ function initSectionSnap(prefersReducedMotion) {
       const bottom = endRect.bottom + scrollY;
       const height = bottom - top;
 
-      // Sections only slightly taller than the screen (mostly padding) are
-      // treated as fitting, so they don't need an extra scroll to get past.
-      if (height <= visibleHeight * FIT_TOLERANCE) {
-        const centre = clamp(top - headerHeight - (visibleHeight - height) / 2);
+      if (height <= viewHeight * FIT_TOLERANCE) {
+        const centre = clamp(top - (viewHeight - height) / 2);
         return { start: centre, end: centre };
       }
-      return { start: clamp(top - headerHeight), end: clamp(bottom - viewHeight) };
+      return { start: clamp(top), end: clamp(bottom - viewHeight) };
     });
   };
   const pointsOf = (stops) => stops.flatMap((s) => (s.start === s.end ? [s.start] : [s.start, s.end]));
 
-  // How far the page may scroll natively in this direction before reaching
-  // the edge of the tall section it's in (0 = not in a tall section / at edge).
+  // Distance left to scroll natively inside the current tall section (0 if not in one).
   const roomInTallSection = (dir) => {
     const y = window.scrollY;
     for (const s of getStops()) {
@@ -432,7 +392,6 @@ function initSectionSnap(prefersReducedMotion) {
     return 0;
   };
 
-  /* ---- Moving ---- */
   const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
   const glideTo = (target) => {
@@ -441,7 +400,7 @@ function initSectionSnap(prefersReducedMotion) {
     settledAt = target;
     if (Math.abs(distance) < MIN_DISTANCE) return;
 
-    if (prefersReducedMotion) {
+    if (reducedMotion) {
       window.scrollTo({ top: target, behavior: 'instant' });
       pauseUntil = performance.now() + PAUSE;
       return;
@@ -471,33 +430,28 @@ function initSectionSnap(prefersReducedMotion) {
     glideTo(getStops()[index].start);
   });
 
-  // Move one section in the given direction (1 = down, -1 = up).
   const step = (dir) => {
     const y = window.scrollY;
     const ahead = pointsOf(getStops()).filter((p) => (dir > 0 ? p > y + 2 : p < y - 2));
-    if (!ahead.length) return;
-    const target = ahead.reduce((a, b) => (Math.abs(a - y) < Math.abs(b - y) ? a : b));
-    glideTo(target);
+    if (ahead.length) glideTo(nearest(ahead, y));
   };
 
-  // Either let the browser scroll (inside a tall section) or step a page.
-  // Returns true when we handled it and the native scroll must be cancelled.
+  // Scroll natively inside a tall section, otherwise step a page.
+  // Returns true when the native scroll must be cancelled.
   const handleIntent = (dir, nativeDistance) => {
     const room = roomInTallSection(dir);
     if (room > 1) {
-      if (nativeDistance <= room) return false; // keep reading normally
-      // This scroll would overshoot the section edge: stop exactly on it.
-      glideTo(window.scrollY + dir * room);
+      if (nativeDistance <= room) return false;
+      glideTo(window.scrollY + dir * room); // would overshoot: stop on the edge
       return true;
     }
     step(dir);
     return true;
   };
 
-  /* ---- Mouse wheel / trackpad ---- */
   window.addEventListener('wheel', (event) => {
-    if (event.defaultPrevented || event.ctrlKey || navOpen()) return; // carousel scroll, pinch-zoom, menu
-    if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;      // sideways trackpad gesture
+    if (event.defaultPrevented || event.ctrlKey || navOpen()) return; // carousel, pinch-zoom, menu
+    if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
 
     const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
     const size = Math.abs(event.deltaY * unit);
@@ -510,15 +464,12 @@ function initSectionSnap(prefersReducedMotion) {
 
     if (isLocked()) { event.preventDefault(); return; }
 
-    // Trackpad momentum: a stream of shrinking deltas right after a step.
-    // Ignore it so one flick = one page. (A mouse wheel repeats equal deltas,
-    // so continuous wheel scrolling still advances after the pause.)
+    // Ignore trackpad momentum (shrinking deltas) so one flick moves one page.
     if (gap < 120 && size < previousSize) { event.preventDefault(); return; }
 
     if (handleIntent(Math.sign(event.deltaY), size)) event.preventDefault();
   }, { passive: false });
 
-  /* ---- Keyboard ---- */
   window.addEventListener('keydown', (event) => {
     if (event.altKey || event.ctrlKey || event.metaKey || navOpen()) return;
     const el = event.target;
@@ -533,7 +484,6 @@ function initSectionSnap(prefersReducedMotion) {
     if (handleIntent(dir, distance)) event.preventDefault();
   });
 
-  /* ---- Touch ---- */
   let touchStartX = 0;
   let touchStartY = 0;
   let touchMode = null; // null (undecided) | 'native' | 'page' | 'ignore'
@@ -555,13 +505,13 @@ function initSectionSnap(prefersReducedMotion) {
     if (Math.max(Math.abs(dx), Math.abs(dy)) < 8) return;
 
     if (Math.abs(dx) > Math.abs(dy)) { touchMode = 'ignore'; return; } // carousel swipe
-    touchDir = dy < 0 ? 1 : -1; // finger up = scroll down
+    touchDir = dy < 0 ? 1 : -1;
 
     if (isLocked() || roomInTallSection(touchDir) <= 1) {
       touchMode = 'page';
       event.preventDefault();
     } else {
-      touchMode = 'native'; // reading inside a tall section
+      touchMode = 'native';
     }
   }, { passive: false });
 
@@ -574,16 +524,14 @@ function initSectionSnap(prefersReducedMotion) {
     touchMode = null;
   }, { passive: true });
 
-  /* ---- Tidy up after native scrolling ----
-     Scrollbar drags, Home/End, in-page links and native scrolling inside tall
-     sections can leave the page between sections; once it's still, carry on
-     to the next section in the direction travelled (or the nearest one after
-     a link jump). */
+  // After native scrolling (scrollbar drag, Home/End, in-page links) leaves the
+  // page between stops, carry on in the direction travelled, or to the nearest
+  // stop after a link jump.
   let settleTimer = null;
   let mouseDown = false;
 
   document.addEventListener('click', (event) => {
-    if (event.target.closest && event.target.closest('a[href^="#"]')) jumpedByLink = true;
+    if (event.target.closest('a[href^="#"]')) jumpedByLink = true;
   });
 
   const settle = () => {
@@ -598,9 +546,9 @@ function initSectionSnap(prefersReducedMotion) {
     let target = null;
     if (Math.abs(moved) >= MIN_MOVE && !jumpedByLink) {
       const ahead = points.filter((p) => (moved > 0 ? p >= y - 1 : p <= y + 1));
-      if (ahead.length) target = ahead.reduce((a, b) => (Math.abs(a - y) < Math.abs(b - y) ? a : b));
+      if (ahead.length) target = nearest(ahead, y);
     }
-    if (target === null) target = points.reduce((a, b) => (Math.abs(a - y) < Math.abs(b - y) ? a : b));
+    if (target === null) target = nearest(points, y);
 
     jumpedByLink = false;
     glideTo(target);
@@ -616,34 +564,55 @@ function initSectionSnap(prefersReducedMotion) {
   window.addEventListener('mouseup', () => { mouseDown = false; scheduleSettle(); }, { passive: true });
 }
 
-/* ---------- Reveal sections as they scroll into view ---------- */
-function initScrollReveal(prefersReducedMotion) {
+function initScrollReveal(reducedMotion) {
   const revealEls = document.querySelectorAll('.reveal');
   if (!revealEls.length) return;
 
-  if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+  if (reducedMotion || !('IntersectionObserver' in window)) {
     revealEls.forEach((el) => el.classList.add('in-view'));
     return;
   }
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.15, rootMargin: '0px 0px -60px 0px' }
-  );
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('in-view');
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
 
   revealEls.forEach((el) => observer.observe(el));
 }
 
-/* ---------- Footer year ---------- */
 function initFooterYear() {
-  document.querySelectorAll('.js-year').forEach((el) => {
-    el.textContent = new Date().getFullYear();
+  const year = new Date().getFullYear();
+  document.querySelectorAll('.js-year').forEach((el) => { el.textContent = year; });
+}
+
+/* Download the EPK as well as opening it in a new tab. */
+function initEpkDownload() {
+  const link = document.querySelector('.epk-button');
+  if (!link) return;
+
+  link.addEventListener('click', (event) => {
+    if (isModifiedClick(event)) return;
+    const download = document.createElement('a');
+    download.href = link.href;
+    download.download = link.pathname.split('/').pop();
+    document.body.appendChild(download);
+    download.click();
+    download.remove();
   });
+}
+
+/* Show the header signature once the hero has scrolled away. */
+function initHomeHeaderSignature() {
+  const signature = document.querySelector('.home-header-signature');
+  const about = document.getElementById('about');
+  if (!signature || !about) return;
+
+  const update = () => signature.classList.toggle('is-visible', about.getBoundingClientRect().top <= 0);
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
+  update();
 }

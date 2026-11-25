@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SONIQUE | South African Singer-Songwriter</title>
+  <title>SONIQUE | Official Site</title>
   <meta name="description" content="Meet SONIQUE, South African singer-songwriter creating alternative electro-pop. Explore her music, videos, live events, and story.">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="theme-color" content="#120f0c">
@@ -11,14 +11,14 @@
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SONIQUE">
-  <meta property="og:title" content="SONIQUE | South African Singer-Songwriter">
+  <meta property="og:title" content="SONIQUE | Official Site">
   <meta property="og:description" content="Explore SONIQUE's alternative electro-pop, latest music, videos, live events, and story.">
   <meta property="og:url" content="https://sonique.co.za/">
   <meta property="og:image" content="https://sonique.co.za/images/hero-pic.webp">
   <meta property="og:image:alt" content="South African singer-songwriter SONIQUE">
   <meta property="og:locale" content="en_ZA">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="SONIQUE | South African Singer-Songwriter">
+  <meta name="twitter:title" content="SONIQUE | Official Site">
   <meta name="twitter:description" content="Explore SONIQUE's alternative electro-pop, latest music, videos, live events, and story.">
   <meta name="twitter:image" content="https://sonique.co.za/images/hero-pic.webp">
   <meta name="twitter:image:alt" content="South African singer-songwriter SONIQUE">
@@ -51,6 +51,17 @@
     ]
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://sonique.co.za/#website",
+    "name": "SONIQUE",
+    "alternateName": ["SONIQUE | Official Site", "SONIQUE Official Site", "sonique.co.za"],
+    "url": "https://sonique.co.za/",
+    "publisher": { "@id": "https://sonique.co.za/#artist" }
+  }
+  </script>
 
   <link rel="icon" type="image/jpeg" href="images/favicon.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -68,6 +79,9 @@
 
   <header class="site-header" id="site-header">
     <div class="header-inner">
+      <a href="./" class="logo-signature home-header-signature" data-section="home" aria-label="SONIQUE home">
+        <img src="images/signature.webp" alt="" width="1919" height="2056">
+      </a>
       <nav class="main-nav" id="main-nav" aria-label="Primary">
         <ul>
           <li><a href="about" class="nav-link" data-section="about">About</a></li>
@@ -156,10 +170,10 @@
             <h3>Why Are We Still Here</h3>
           </li>
           <li class="release-item">
-            <div class="release-cover">
+            <a class="release-cover" href="together-we-are-stronger/" aria-label="Together We Are Stronger — read more">
               <img src="images/cover-toghether-we-are-stornger.webp" alt="Together We Are Stronger cover art" loading="lazy">
-            </div>
-            <h3>Together We Are Stronger</h3>
+            </a>
+            <h3><a class="release-title-link" href="together-we-are-stronger/">Together We Are Stronger</a></h3>
           </li>
         </ul>
         </div>
@@ -252,7 +266,7 @@
         <h2>Contact</h2>
         <div class="contact-actions">
           <a class="btn btn-primary contact-button" href="mailto:manager@sonique.co.za">Contact</a>
-          <a class="btn btn-outline epk-button" href="documents/Sonique-EPK-Aug-2026.pdf" download>Download EPK</a>
+          <a class="btn btn-outline epk-button" href="documents/Sonique-EPK-Aug-2026.pdf" target="_blank" rel="noopener">Download EPK</a>
         </div>
         <a class="contact-email" href="mailto:manager@sonique.co.za">manager@sonique.co.za</a>
         <div class="socials-icon-groups">
@@ -279,7 +293,7 @@
   <footer class="site-footer">
     <div class="section-inner footer-inner">
       <a href="./" class="footer-brand" data-section="home">SONIQUE</a>
-      <p class="footer-copy">&copy; <span class="js-year"></span> SONIQUE. All rights reserved.</p>
+      <p class="footer-copy">&copy; <span class="js-year"></span> SONIQUE. All rights reserved. <span class="footer-credit">Website designed &amp; developed by <a href="https://clementstudios.co.za" target="_blank" rel="noopener noreferrer">Clement Studios</a>.</span></p>
     </div>
   </footer>
 
