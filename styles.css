@@ -421,13 +421,17 @@ body.hero-scroll-enabled .hero-scroll-title {
   transition: transform 0.25s var(--ease);
 }
 .video-thumbnail-link:hover::after { transform: translate(-35%, -50%) scale(1.2); }
-.video-thumbnail-link img {
+.video-thumbnail-link img,
+.video-loop {
+  display: block;
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
+  pointer-events: none; /* taps and drags go to the link and carousel */
   transition: transform 0.35s var(--ease);
 }
-.video-thumbnail-link:hover img { transform: scale(1.03); }
+.video-thumbnail-link:hover img,
+.video-thumbnail-link:hover .video-loop { transform: scale(1.03); }
 
 @media (hover: hover) and (pointer: fine) {
   .release-carousel,
@@ -830,7 +834,9 @@ body.hero-scroll-enabled .hero-scroll-title {
 
   /* Snap items to the centre; the side padding lets the first and last items centre too. */
   .release-carousel { --carousel-item: min(72vw, 320px); }
-  .video-carousel { --carousel-item: min(calc(100vw - 5rem), 560px); }
+  /* Portrait loops: sized by height so a card and its title fit on one screen. */
+  .video-carousel { --carousel-item: min(calc(100vw - 5rem), calc(58svh * 9 / 16)); }
+  .video-loop { aspect-ratio: 9 / 16; }
   .release-carousel,
   .video-carousel {
     scroll-snap-type: x mandatory;

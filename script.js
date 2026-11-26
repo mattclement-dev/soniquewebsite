@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCarouselWheelScroll();
   initCarouselMouseDrag(reducedMotion);
   initCarouselArrows(reducedMotion);
+  initVideoLoops(reducedMotion);
   initTextFit();
   initSectionUrls(reducedMotion);
   initSectionSnap(reducedMotion);
@@ -177,6 +178,69 @@ function initCarouselArrows(reducedMotion) {
     window.addEventListener('resize', update, { passive: true });
     window.addEventListener('load', update);
     update();
+  });
+}
+
+/* Looping video previews: landscape clips on desktop, portrait clips on phones.
+   Each clip loads when it first comes into view and only plays while visible.
+   The breakpoint must match the phone carousel in styles.css. */
+function initVideoLoops(reducedMotion) {
+  const videos = Array.from(document.querySelectorAll('.video-loop'));
+  if (!videos.length) return;
+
+  const portrait = window.matchMedia('(max-width: 860px)');
+  // Resolve paths now, before section URLs (/videos etc.) change the page address.
+  const resolve = (path) => new URL(path, document.baseURI).href;
+  const clips = new Map(videos.map((video) => [video, {
+    landscape: resolve(video.dataset.landscape),
+    portrait: resolve(video.dataset.portrait),
+    poster: video.getAttribute('poster'),
+    visible: false,
+  }]));
+
+  const play = (video) => {
+    const promise = video.play();
+    if (promise) promise.catch(() => { /* autoplay blocked (e.g. low power mode): the poster or first frame stays */ });
+  };
+
+  const load = (video) => {
+    const clip = clips.get(video);
+    const src = portrait.matches ? clip.portrait : clip.landscape;
+    // YouTube thumbnails are landscape, so portrait cards wait for the clip itself.
+    if (portrait.matches) video.removeAttribute('poster');
+    else if (clip.poster) video.setAttribute('poster', clip.poster);
+
+    video.muted = true;
+    if (reducedMotion) {
+      // Show a still frame instead of motion.
+      video.preload = 'metadata';
+      video.src = `${src}#t=0.1`;
+      return;
+    }
+    video.preload = 'auto';
+    video.src = src;
+    if (clip.visible) play(video);
+  };
+
+  if (!('IntersectionObserver' in window)) {
+    videos.forEach((video) => { clips.get(video).visible = true; load(video); });
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(({ target: video, isIntersecting }) => {
+      const clip = clips.get(video);
+      clip.visible = isIntersecting;
+      if (!isIntersecting) { video.pause(); return; }
+      if (!video.getAttribute('src')) load(video);
+      else if (!reducedMotion) play(video);
+    });
+  }, { threshold: 0.25 });
+  videos.forEach((video) => observer.observe(video));
+
+  // Crossing the breakpoint (e.g. rotating a tablet) swaps loaded clips to the other shape.
+  portrait.addEventListener('change', () => {
+    videos.forEach((video) => { if (video.getAttribute('src')) load(video); });
   });
 }
 
