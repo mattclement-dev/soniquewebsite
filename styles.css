@@ -673,32 +673,6 @@ body.hero-scroll-enabled .hero-scroll-title {
 }
 
 .song-body .song-more { display: flex; margin: 1.6em 0 0; }
-
-/* ---------- 404 ---------- */
-.not-found {
-  display: flex;
-  align-items: center;
-  min-height: calc(100svh - 7rem);
-  padding: 9rem 0 4rem;
-  text-align: center;
-}
-.not-found .section-inner { width: 100%; }
-.not-found-code {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(5rem, 18vw, 9rem);
-  font-weight: 800;
-  line-height: 1;
-  color: var(--gold);
-}
-.not-found h1 {
-  margin: 0.75rem 0 1rem;
-  font-size: clamp(1.6rem, 5vw, 2.6rem);
-  color: var(--ink);
-  text-transform: uppercase;
-}
-.not-found-text { margin: 0 0 2.5rem; color: var(--sand); }
-.not-found-home::before { content: none; } /* no play icon */
 .song-more-button {
   display: inline-flex;
   align-items: center;
