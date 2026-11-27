@@ -447,6 +447,11 @@ function initSectionSnap(reducedMotion) {
       const bottom = endRect.bottom + scrollY;
       const height = bottom - top;
 
+      // Contact and the footer sit flush with the bottom of the screen, so the footer always shows.
+      if (section === lastSection && height <= viewHeight * FIT_TOLERANCE) {
+        const end = clamp(bottom - viewHeight);
+        return { start: end, end };
+      }
       if (height <= viewHeight * FIT_TOLERANCE) {
         const centre = clamp(top - (viewHeight - height) / 2);
         return { start: centre, end: centre };
