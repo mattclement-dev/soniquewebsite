@@ -418,8 +418,16 @@ function initSectionSnap(reducedMotion) {
   let pauseUntil = 0;
   let settledAt = window.scrollY;
   let jumpedByLink = false;
+  const GESTURE_GAP = 220;     // ms of wheel silence that ends a gesture
+  const WHEEL_STEP_MIN = 30;   // px of wheel travel before a page turn
+  const WHEEL_PUSH_MIN = 30;   // px: a new push mid-momentum must be at least this big...
+  const WHEEL_PUSH_RATIO = 2;  // ...and this many times the previous event
+
   let lastWheelTime = 0;
   let lastWheelSize = 0;
+  let wheelDir = 0;
+  let wheelSpent = false; // this gesture has already turned a page
+  let wheelTravel = 0;    // px of wheel input in this gesture so far
 
   const isLocked = () => animating || performance.now() < pauseUntil;
   const navOpen = () => nav && nav.classList.contains('open');
@@ -545,12 +553,30 @@ function initSectionSnap(reducedMotion) {
     lastWheelSize = size;
     if (size < 1) return;
 
-    if (isLocked()) { event.preventDefault(); return; }
+    // One wheel gesture (a trackpad flick and its momentum, or a burst of wheel
+    // notches) turns at most one page. A pause, a change of direction, or a
+    // clearly harder push mid-momentum starts a new gesture.
+    const dir = Math.sign(event.deltaY);
+    const freshPush = size >= WHEEL_PUSH_MIN && size > previousSize * WHEEL_PUSH_RATIO;
+    if (gap > GESTURE_GAP || dir !== wheelDir || freshPush) {
+      wheelSpent = false;
+      wheelTravel = 0;
+    }
+    wheelDir = dir;
 
-    // Ignore trackpad momentum (shrinking deltas) so one flick moves one page.
-    if (gap < 120 && size < previousSize) { event.preventDefault(); return; }
+    if (isLocked() || wheelSpent) { event.preventDefault(); return; }
 
-    if (handleIntent(Math.sign(event.deltaY), size)) event.preventDefault();
+    const room = roomInTallSection(dir);
+    if (room > 1 && size <= room) return; // scroll natively inside a tall section
+
+    // A light brush of the trackpad shouldn't turn the page.
+    wheelTravel += size;
+    if (room <= 1 && wheelTravel < WHEEL_STEP_MIN) { event.preventDefault(); return; }
+
+    if (handleIntent(dir, size)) {
+      event.preventDefault();
+      wheelSpent = true;
+    }
   }, { passive: false });
 
   window.addEventListener('keydown', (event) => {

@@ -383,7 +383,8 @@ body.hero-scroll-enabled .hero-scroll-title {
 .video-carousel::-webkit-scrollbar-thumb { background: var(--accent); }
 
 .release-item { flex: 0 0 min(440px, 52vh); }
-.video-carousel-item { flex: 0 0 min(720px, calc(48vh * 16 / 9)); }
+/* Sized by height so the heading, video and caption still fit one screen. */
+.video-carousel-item { flex: 0 0 min(1100px, 80vw, calc(62vh * 16 / 9)); }
 .release-item h3,
 .video-carousel-item h3 {
   margin: 0.85rem 0 0;
@@ -835,7 +836,7 @@ body.hero-scroll-enabled .hero-scroll-title {
   /* Snap items to the centre; the side padding lets the first and last items centre too. */
   .release-carousel { --carousel-item: min(72vw, 320px); }
   /* Portrait loops: sized by height so a card and its title fit on one screen. */
-  .video-carousel { --carousel-item: min(calc(100vw - 5rem), calc(58svh * 9 / 16)); }
+  .video-carousel { --carousel-item: min(calc(100vw - 5rem), calc(64svh * 9 / 16)); }
   .video-loop { aspect-ratio: 9 / 16; }
   .release-carousel,
   .video-carousel {
